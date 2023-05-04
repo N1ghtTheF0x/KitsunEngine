@@ -1,8 +1,9 @@
 #ifndef KITSUNENGINE_UTILS_HPP
 #define KITSUNENGINE_UTILS_HPP
 
-#include <chrono>
+#include <ctime>
 #include <string>
+#include <sstream>
 
 namespace KitsunEngine
 {
@@ -48,10 +49,10 @@ namespace KitsunEngine
         class Date
         {
         private:
-            std::chrono::steady_clock::time_point time;
+            std::time_t time;
         public:
             Date();
-            Date(std::chrono::steady_clock::time_point time);
+            Date(std::time_t time);
             // Time
             long long getMiliseconds();
             long long getSeconds();
@@ -71,8 +72,10 @@ namespace KitsunEngine
             Logger(const char* label);
             void info(const char* message);
             void info(std::string message);
+            void info(std::stringstream stream);
             void error(const char* message);
             void error(std::string message);
+            void error(std::stringstream stream);
         };
     }
 }

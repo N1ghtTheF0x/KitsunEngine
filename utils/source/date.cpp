@@ -6,51 +6,43 @@ namespace KitsunEngine
     {
         Date::Date()
         {
-            time = std::chrono::high_resolution_clock::now();
+            time = std::time(NULL);
         }
-        Date::Date(std::chrono::steady_clock::time_point t): time(t)
+        Date::Date(std::time_t t): time(t)
         {
-
+            
         }
         long long Date::getMiliseconds()
         {
-            auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch());
-            return ms.count();
+            return time;
         }
         long long Date::getSeconds()
         {
-            auto sec = std::chrono::duration_cast<std::chrono::seconds>(time.time_since_epoch());
-            return sec.count();
+            return time % 60;
         }
         int Date::getMinutes()
         {
-            auto min = std::chrono::duration_cast<std::chrono::minutes>(time.time_since_epoch());
-            return min.count();
+            return (time / 60) % 60;
         }
         int Date::getHours()
         {
-            auto hours = std::chrono::duration_cast<std::chrono::hours>(time.time_since_epoch());
-            return hours.count();
+            return (time / 3600) % 24;
         }
         int Date::getYears()
         {
-            auto years = std::chrono::duration_cast<std::chrono::years>(time.time_since_epoch());
-            return years.count();
+            return 0;
         }
         int Date::getDay()
         {
-            auto day = std::chrono::duration_cast<std::chrono::days>(time.time_since_epoch());
-            return day.count();
+            return 0;
         }
         int Date::getMonth()
         {
-            auto month = std::chrono::duration_cast<std::chrono::months>(time.time_since_epoch());
-            return month.count();
+            return 0;
         }
         int Date::getWeek()
         {
-            auto week = std::chrono::duration_cast<std::chrono::weeks>(time.time_since_epoch());
-            return week.count();
+            return 0;
         }
     }
 }

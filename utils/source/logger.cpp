@@ -1,6 +1,5 @@
 #include <Utils.hpp>
 
-#include <sstream>
 #include <iostream>
 
 namespace KitsunEngine
@@ -25,7 +24,7 @@ namespace KitsunEngine
             if(s < 10) ss << '0';
             ss << s;
             ss << ']';
-            std::string str = ss.str();
+            static std::string str = ss.str();
             return str.c_str();
         }
         Logger::Logger(const char* l): label(l)
@@ -34,11 +33,15 @@ namespace KitsunEngine
         }
         void Logger::info(const char* message)
         {
-            std::cout << logger_time() << '[' << label << "/INFO]: " << message << std::endl;
+            std::cout << logger_time() << " [" << label << "/INFO]: " << message << std::endl;
         }
         void Logger::info(std::string message)
         {
             info(message.c_str());
+        }
+        void Logger::info(std::stringstream stream)
+        {
+            info(stream.str());
         }
         void Logger::error(const char* message)
         {
@@ -47,6 +50,10 @@ namespace KitsunEngine
         void Logger::error(std::string message)
         {
             error(message.c_str());
+        }
+        void Logger::error(std::stringstream stream)
+        {
+            error(stream.str());
         }
     }
 }
