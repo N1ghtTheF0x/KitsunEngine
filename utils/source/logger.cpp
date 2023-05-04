@@ -1,0 +1,52 @@
+#include <Utils.hpp>
+
+#include <sstream>
+#include <iostream>
+
+namespace KitsunEngine
+{
+    namespace Utils
+    {
+        class Date;
+        const char* logger_time()
+        {
+            std::stringstream ss;
+            Date date;
+            auto h = date.getHours();
+            auto m = date.getMinutes();
+            auto s = date.getSeconds();
+            ss << '[';
+            if(h < 10) ss << '0';
+            ss << h;
+            ss << ':';
+            if(m < 10) ss << '0';
+            ss << m;
+            ss << ':';
+            if(s < 10) ss << '0';
+            ss << s;
+            ss << ']';
+            std::string str = ss.str();
+            return str.c_str();
+        }
+        Logger::Logger(const char* l): label(l)
+        {
+
+        }
+        void Logger::info(const char* message)
+        {
+            std::cout << logger_time() << '[' << label << "/INFO]: " << message << std::endl;
+        }
+        void Logger::info(std::string message)
+        {
+            info(message.c_str());
+        }
+        void Logger::error(const char* message)
+        {
+            std::cerr << logger_time() << '[' << label << "/ERROR]: " << message << std::endl;
+        }
+        void Logger::error(std::string message)
+        {
+            error(message.c_str());
+        }
+    }
+}
