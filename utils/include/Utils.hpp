@@ -2,6 +2,7 @@
 #define KITSUNENGINE_UTILS_HPP
 
 #include <ctime>
+#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -15,11 +16,12 @@ namespace KitsunEngine
             double x;
             double y;
         public:
+            friend std::ostream& operator<<(std::ostream& os,const Vector2& vec);
             Vector2(double x,double y);
             void setX(double x);
-            double getX();
+            double getX() const;
             void setY(double y);
-            double getY();
+            double getY() const;
         };
         class Vector3
         {
@@ -28,13 +30,14 @@ namespace KitsunEngine
             double y;
             double z;
         public:
+            friend std::ostream& operator<<(std::ostream& os,const Vector3& vec);
             Vector3(double x,double y,double z);
             void setX(double x);
-            double getX();
+            double getX() const;
             void setY(double y);
-            double getY();
+            double getY() const;
             void setZ(double z);
-            double getZ();
+            double getZ() const;
         };
         class Color
         {
@@ -51,18 +54,23 @@ namespace KitsunEngine
         private:
             std::time_t time;
         public:
+            friend std::ostream& operator<<(std::ostream& os,const Date& vec);
             Date();
             Date(std::time_t time);
             // Time
-            long long getMiliseconds();
-            long long getSeconds();
-            int getMinutes();
-            int getHours();
-            int getYears();
+            long long getMiliseconds() const;
+            long long getSeconds() const;
+            int getMinutes() const;
+            int getHours() const;
+            int getYears() const;
             // Day
-            int getDay();
-            int getMonth();
-            int getWeek();
+            int getDay() const;
+            int getMonth() const;
+            int getWeek() const;
+            // Strings
+            std::string toTimeString() const;
+            std::string toDateString() const;
+            std::string toString() const;
         };
         class Logger
         {

@@ -33,7 +33,8 @@ namespace KitsunEngine
         }
         void Logger::info(const char* message)
         {
-            std::cout << logger_time() << " [" << label << "/INFO]: " << message << std::endl;
+            Date date;
+            std::cout << '[' << date.toTimeString() << "] [" << label << "/INFO]: " << message << std::endl;
         }
         void Logger::info(std::string message)
         {
@@ -45,7 +46,8 @@ namespace KitsunEngine
         }
         void Logger::error(const char* message)
         {
-            std::cerr << logger_time() << '[' << label << "/ERROR]: " << message << std::endl;
+            Date date;
+            std::cerr << '[' << date.toTimeString() << "] [" << label << "/ERROR]: " << message << std::endl;
         }
         void Logger::error(std::string message)
         {

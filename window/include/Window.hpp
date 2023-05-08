@@ -12,14 +12,31 @@
 
 #include <Utils.hpp>
 
-#include <thread>
-
 namespace KitsunEngine
 {
     class Window
     {
+    public:
+        struct MessageState
+        {
+            enum struct Type
+            {
+                KeyboardDown,
+                KeyboardUp,
+                Close,
+                MouseMove
+            };
+            Type type;
+            
+        };
+        struct State
+        {
+            Window *window;
+            MessageState message;
+        };
     private:
         Utils::Logger logger;
+        State* curState;
 #ifdef OS_WINDOWS
     private:
         HWND handle;
@@ -27,21 +44,24 @@ namespace KitsunEngine
         static LRESULT CALLBACK WindowProc(HWND handle,UINT message,WPARAM wparam,LPARAM lparam);
         STARTUPINFO info;
         void messageThreadLoop();
-        std::thread threadMessage;
+        bool running;
     public:
-        struct State
-        {
-            Window *window;
-        };
-        State* curState;
         static Window::State* getWindowState(HWND handle);
+        operator HWND();
+        operator HINSTANCE();
 #endif
+
     public:
         Window(unsigned int width,unsigned int height);
+        ~Window();
         void show();
+        void close();
         void hide();
-        void listen();
         void setTitle(const char* title);
+        bool isRunning();
+        State* getState();
+        void refreshMessages();
+        MessageState &getMessage();
     };
 }
 

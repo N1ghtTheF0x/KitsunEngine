@@ -1,6 +1,8 @@
 #include <Window.hpp>
 
+#include <Input.hpp>
 #include <iostream>
+#include <windowsx.h>
 
 wchar_t* char2wstr(const char* str)
 {
@@ -8,8 +10,6 @@ wchar_t* char2wstr(const char* str)
     MultiByteToWideChar(CP_ACP,0,str,-1,wstr,strlen(str)+1);
     return wstr;
 }
-
-
 
 namespace KitsunEngine
 {
@@ -27,27 +27,36 @@ namespace KitsunEngine
             CREATESTRUCT *create = reinterpret_cast<CREATESTRUCT*>(lparam);
             state = reinterpret_cast<Window::State*>(create->lpCreateParams);
             SetWindowLongPtr(handle,GWLP_USERDATA,(LONG_PTR)state);
-        } else state = getWindowState(handle);
+        } 
+        else state = getWindowState(handle);
         switch(message)
         {
-            case WM_DESTROY:
-                PostQuitMessage(0);
+            case WM_KEYDOWN:
+                state->message.type = Window::MessageState::Type::KeyboardDown;
+                Keyboard::setKeyState(wparam,true);
+                Keyboard::setLastKeyPressed(wparam);
                 return 0;
-            case WM_PAINT:
-                {
-                    PAINTSTRUCT ps;
-                    HDC hdc = BeginPaint(handle,&ps);
-
-                    FillRect(hdc,&ps.rcPaint,(HBRUSH)(COLOR_WINDOW+1));
-
-                    EndPaint(handle,&ps);
-                }
+            case WM_KEYUP:
+                state->message.type = Window::MessageState::Type::KeyboardUp;
+                Keyboard::setKeyState(wparam,false);
+                return 0;
+            case WM_DESTROY:
+                state->message.type = Window::MessageState::Type::Close;
+                return 0;
+            case WM_MOUSEMOVE:
+                state->message.type = Window::MessageState::Type::MouseMove;
+                Mouse::setPosition(GET_X_LPARAM(lparam),GET_Y_LPARAM(lparam));
                 return 0;
         }
         return DefWindowProc(handle,message,wparam,lparam);
     }
+    Window::~Window()
+    {
+        logger.info("Destroying Window...");
+    }
     Window::Window(unsigned int width,unsigned int height): logger("Window")
     {
+        running = false;
         logger.info("Creating Window using WIN32...");
         instance = (HINSTANCE)GetModuleHandle(NULL);
         curState = new (std::nothrow)State;
@@ -84,9 +93,8 @@ namespace KitsunEngine
             exit(EXIT_FAILURE);
         }
         logger.info("Created Window!");
+        running = true;
         show();
-        threadMessage = std::thread(&Window::messageThreadLoop,this);
-        threadMessage.detach();
     }
     void Window::show()
     {
@@ -96,18 +104,41 @@ namespace KitsunEngine
     {
         ShowWindow(handle,SW_HIDE);
     }
-    void Window::messageThreadLoop()
+    void Window::refreshMessages()
     {
-        logger.info("Listening for messages...");
         MSG msg = {};
-        while(GetMessage(&msg,NULL,0,0) > 0)
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
+        GetMessage(&msg,handle,0,0);
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
     }
     void Window::setTitle(const char* title)
     {
         SetWindowText(handle,char2wstr(title));
+    }
+    bool Window::isRunning()
+    {
+        return running;
+    }
+    void Window::close()
+    {
+        running = false;
+        DestroyWindow(handle);
+        PostQuitMessage(EXIT_SUCCESS);
+    }
+    Window::State* Window::getState()
+    {
+        return curState;
+    }
+    Window::MessageState& Window::getMessage()
+    {
+        return curState->message;
+    }
+    Window::operator HINSTANCE()
+    {
+        return instance;
+    }
+    Window::operator HWND()
+    {
+        return handle;
     }
 }

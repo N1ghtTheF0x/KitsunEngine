@@ -27,9 +27,10 @@ string(TOUPPER ${CMAKE_SYSTEM_NAME} OS_NAME)
 add_compile_definitions(OS_${OS_NAME})
 
 add_subdirectory(utils)
+add_subdirectory(input)
 add_subdirectory(window)
 
 add_executable(kitsunengine main.cpp)
 
-target_include_directories(kitsunengine PRIVATE window/include utils/include)
-target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils)
+target_include_directories(kitsunengine PRIVATE window/include utils/include input/include)
+target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input)
