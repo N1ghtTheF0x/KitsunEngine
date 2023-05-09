@@ -11,6 +11,26 @@ wchar_t* char2wstr(const char* str)
     return wstr;
 }
 
+PIXELFORMATDESCRIPTOR pfd =
+{
+    sizeof(PIXELFORMATDESCRIPTOR),
+    1,
+    PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    //Flags
+    PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+    32,                   // Colordepth of the framebuffer.
+    0, 0, 0, 0, 0, 0,
+    0,
+    0,
+    0,
+    0, 0, 0, 0,
+    24,                   // Number of bits for the depthbuffer
+    8,                    // Number of bits for the stencilbuffer
+    0,                    // Number of Aux buffers in the framebuffer.
+    PFD_MAIN_PLANE,
+    0,
+    0, 0, 0
+};
+
 namespace KitsunEngine
 {
     Window::State* Window::getWindowState(HWND handle)
@@ -18,6 +38,10 @@ namespace KitsunEngine
         LONG_PTR ptr = GetWindowLongPtr(handle,GWLP_USERDATA);
         Window::State *state = reinterpret_cast<Window::State*>(ptr);
         return state;
+    }
+    int Window::getPixelFormat()
+    {
+        return pixelFormat;
     }
     LRESULT CALLBACK Window::WindowProc(HWND handle,UINT message,WPARAM wparam,LPARAM lparam)
     {
@@ -27,10 +51,18 @@ namespace KitsunEngine
             CREATESTRUCT *create = reinterpret_cast<CREATESTRUCT*>(lparam);
             state = reinterpret_cast<Window::State*>(create->lpCreateParams);
             SetWindowLongPtr(handle,GWLP_USERDATA,(LONG_PTR)state);
+            state->message.type = Window::MessageState::Type::Ready;
+
+            state->window->gdi = GetDC(handle);
+            state->window->pixelFormat = ChoosePixelFormat(state->window->gdi,&pfd);
+            SetPixelFormat(state->window->gdi,state->window->pixelFormat,&pfd);
         } 
         else state = getWindowState(handle);
         switch(message)
         {
+            default:
+                if(state != nullptr) state->message.type = Window::MessageState::Type::Nothing;
+                break;
             case WM_KEYDOWN:
                 state->message.type = Window::MessageState::Type::KeyboardDown;
                 Keyboard::setKeyState(wparam,true);
@@ -46,6 +78,16 @@ namespace KitsunEngine
             case WM_MOUSEMOVE:
                 state->message.type = Window::MessageState::Type::MouseMove;
                 Mouse::setPosition(GET_X_LPARAM(lparam),GET_Y_LPARAM(lparam));
+                return 0;
+            case WM_PAINT:
+                {
+                    PAINTSTRUCT ps;
+                    HDC hdc = BeginPaint(handle, &ps);
+
+                    
+
+                    EndPaint(handle, &ps);
+                }
                 return 0;
         }
         return DefWindowProc(handle,message,wparam,lparam);
@@ -133,6 +175,12 @@ namespace KitsunEngine
     {
         return curState->message;
     }
+    Utils::Rectangle Window::getRect()
+    {
+        RECT rect;
+        GetWindowRect(handle,&rect);
+        return Utils::Rectangle(rect);
+    }
     Window::operator HINSTANCE()
     {
         return instance;
@@ -140,5 +188,9 @@ namespace KitsunEngine
     Window::operator HWND()
     {
         return handle;
+    }
+    Window::operator HDC()
+    {
+        return gdi;
     }
 }

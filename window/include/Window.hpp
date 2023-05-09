@@ -21,10 +21,12 @@ namespace KitsunEngine
         {
             enum struct Type
             {
+                Nothing,
                 KeyboardDown,
                 KeyboardUp,
                 Close,
-                MouseMove
+                MouseMove,
+                Ready
             };
             Type type;
             
@@ -40,15 +42,18 @@ namespace KitsunEngine
 #ifdef OS_WINDOWS
     private:
         HWND handle;
+        HDC gdi;
+        int pixelFormat;
         HINSTANCE instance;
         static LRESULT CALLBACK WindowProc(HWND handle,UINT message,WPARAM wparam,LPARAM lparam);
         STARTUPINFO info;
-        void messageThreadLoop();
         bool running;
     public:
         static Window::State* getWindowState(HWND handle);
+        int getPixelFormat();
         operator HWND();
         operator HINSTANCE();
+        operator HDC();
 #endif
 
     public:
@@ -62,6 +67,7 @@ namespace KitsunEngine
         State* getState();
         void refreshMessages();
         MessageState &getMessage();
+        Utils::Rectangle getRect();
     };
 }
 

@@ -24,13 +24,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 message(STATUS "Operating System: ${CMAKE_SYSTEM_NAME}")
 
 string(TOUPPER ${CMAKE_SYSTEM_NAME} OS_NAME)
-add_compile_definitions(OS_${OS_NAME})
+add_compile_definitions(OS_${OS_NAME} OS_NAME="${CMAKE_SYSTEM_NAME}")
 
 add_subdirectory(utils)
 add_subdirectory(input)
 add_subdirectory(window)
+add_subdirectory(renderer)
 
-add_executable(kitsunengine main.cpp)
+if(WIN32)
+    set(SETUP_WINDOWS WIN32)
+endif(WIN32)
 
-target_include_directories(kitsunengine PRIVATE window/include utils/include input/include)
-target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input)
+add_executable(kitsunengine ${SETUP_WINDOWS} main.cpp)
+
+target_include_directories(kitsunengine PRIVATE window/include utils/include input/include renderer/include)
+target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input kitsunengine-renderer)

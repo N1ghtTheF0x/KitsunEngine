@@ -37,6 +37,10 @@ namespace KitsunEngine
         {
             
         }
+        Date::operator time_t()
+        {
+            return time;
+        }
         long long Date::getMiliseconds() const
         {
             return time;
@@ -55,19 +59,19 @@ namespace KitsunEngine
         }
         int Date::getYears() const
         {
-            return 0;
+            return (time / 31556926) + 1970;
         }
         int Date::getDay() const
         {
-            return 0;
+            return (time / 86400);
         }
         int Date::getMonth() const
         {
-            return 0;
+            return (time / 2629743) % 12;
         }
         int Date::getWeek() const
         {
-            return 0;
+            return (time / 604800) % 6;
         }
         std::string Date::toTimeString() const
         {
@@ -87,7 +91,7 @@ namespace KitsunEngine
         }
         std::string Date::toDateString() const
         {
-            return std::string(weekDayName[getWeek()]) + ' ' + std::string(monthName[getMonth()]) + ' ' + std::to_string(getYears());
+            return std::string(weekDayName[getWeek()]) + ' ' + std::string(monthName[getMonth()]) + ' ' + std::to_string(getDay()) + ' ' + std::to_string(getYears());
         }
         std::string Date::toString() const
         {
