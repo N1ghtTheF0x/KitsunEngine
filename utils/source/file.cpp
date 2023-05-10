@@ -69,5 +69,9 @@ namespace KitsunEngine
             static auto path = std::filesystem::current_path().string();
             return path.c_str();
         }
+        size_t File::size()
+        {
+            return std::filesystem::file_size(path);
+        }
     }
 }

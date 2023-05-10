@@ -31,6 +31,8 @@ namespace KitsunEngine
                 Nothing,
                 KeyboardDown,
                 KeyboardUp,
+                MouseDown,
+                MouseUp,
                 Close,
                 MouseMove,
                 Ready,

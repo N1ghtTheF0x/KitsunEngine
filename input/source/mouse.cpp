@@ -11,4 +11,12 @@ namespace KitsunEngine
     {
         return position;
     }
+    bool Mouse::isButtonPressed(Mouse::Button button)
+    {
+        return buttonState[(size_t)button];
+    }
+    void Mouse::setButtonPressed(Mouse::Button button,bool state)
+    {
+        buttonState[(size_t)button] = state;
+    }
 }

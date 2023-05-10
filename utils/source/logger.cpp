@@ -7,27 +7,15 @@ namespace KitsunEngine
     namespace Utils
     {
         class Date;
-        const char* logger_time()
-        {
-            std::stringstream ss;
-            Date date;
-            auto h = date.getHours();
-            auto m = date.getMinutes();
-            auto s = date.getSeconds();
-            ss << '[';
-            if(h < 10) ss << '0';
-            ss << h;
-            ss << ':';
-            if(m < 10) ss << '0';
-            ss << m;
-            ss << ':';
-            if(s < 10) ss << '0';
-            ss << s;
-            ss << ']';
-            static std::string str = ss.str();
-            return str.c_str();
-        }
         Logger::Logger(const char* l): label(l)
+        {
+
+        }
+        Logger::Logger(std::string l): label(l.c_str())
+        {
+
+        }
+        Logger::Logger(std::stringstream l): label(l.str().c_str())
         {
 
         }

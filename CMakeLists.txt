@@ -36,6 +36,7 @@ add_subdirectory(utils)
 add_subdirectory(input)
 add_subdirectory(window)
 add_subdirectory(renderer)
+add_subdirectory(audio)
 
 if(WIN32)
     set(SETUP_WINDOWS WIN32)
@@ -43,5 +44,5 @@ endif(WIN32)
 
 add_executable(kitsunengine ${SETUP_WINDOWS} main.cpp)
 
-target_include_directories(kitsunengine PRIVATE window/include utils/include input/include renderer/include)
-target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input kitsunengine-renderer)
+target_include_directories(kitsunengine PRIVATE window/include utils/include input/include renderer/include audio/include)
+target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input kitsunengine-renderer kitsunengine-audio)

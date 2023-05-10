@@ -21,6 +21,18 @@ namespace KitsunEngine
         {
 
         }
+        Rectangle::Rectangle(Rectangle::BBox box):
+            position(box.left,box.top), size(box.right - box.left,box.bottom - box.top)
+        {
+
+        }
+        Rectangle::BBox Rectangle::getBBox()
+        {
+            return {
+                position.getX(),position.getX() + size.getX(),
+                position.getY(),position.getY() + size.getY()
+            };
+        }
         Vector2 &Rectangle::getPosition()
         {
             return position;

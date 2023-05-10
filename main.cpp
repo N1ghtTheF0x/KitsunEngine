@@ -75,6 +75,9 @@ int main(int argc,char** argv)
             case KitsunEngine::Window::MessageState::Type::Draw:
                 draw(window);
                 break;
+            case KitsunEngine::Window::MessageState::Type::KeyboardDown:
+                std::cout << KitsunEngine::Keyboard::getLastKeyPressed() << std::endl;
+                break;
             default:
                 break;
         }

@@ -7,6 +7,14 @@ GLint vinfo_attr[] = {
     GLX_RGBA,GLX_DEPTH_SIZE,24,GLX_DOUBLEBUFFER,None
 };
 
+#define LINUX_EVENTMASK ExposureMask | \
+                        KeyPressMask | \
+                        KeyReleaseMask | \
+                        ButtonPressMask | \
+                        ButtonReleaseMask | \
+                        PointerMotionMask | \
+                        SubstructureNotifyMask
+
 namespace KitsunEngine
 {
     Window::operator Display*()
@@ -48,7 +56,7 @@ namespace KitsunEngine
         cmap = XCreateColormap(dis,root,vinfo->visual,AllocNone);
 
         swa.colormap = cmap;
-        swa.event_mask = ExposureMask | KeyPressMask;
+        swa.event_mask = LINUX_EVENTMASK;
 
         win = XCreateWindow(dis,root,0,0,width,height,0,vinfo->depth,InputOutput,vinfo->visual,CWColormap | CWEventMask,&swa);
 
@@ -97,12 +105,27 @@ namespace KitsunEngine
             case Expose:
                 curState->message.type = EventType::Draw;
                 break;
+            case CreateNotify:
+                curState->message.type = EventType::Ready;
+                break;
+            case DestroyNotify:
+                curState->message.type = EventType::Close;
+                close();
+                break;
             case KeyPress:
-                curState->message.type = EventType::KeyboardDown;
+                curState->message.type = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
                 XLookupString(&event.xkey,text,0xFF,&key,0);
                 Keyboard::setKeyState(text[0],event.xkey.type == KeyPress);
                 if(event.xkey.type == KeyPress) 
                     Keyboard::setLastKeyPressed(text[0]);
+                break;
+            case ButtonPress:
+                curState->message.type = event.xbutton.type == ButtonPress ? EventType::MouseDown : EventType::MouseUp;
+                Mouse::setButtonPressed((Mouse::Button)(event.xbutton.button-1),event.xbutton.type == ButtonPress);
+                break;
+            case MotionNotify:
+                curState->message.type = EventType::MouseMove;
+                Mouse::setPosition(event.xbutton.x,event.xbutton.y);
                 break;
         }
     }
