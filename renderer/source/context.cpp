@@ -18,5 +18,17 @@ namespace KitsunEngine
 #ifdef OS_WINDOWS
         if(wgl != NULL) wglDeleteContext(wgl);
 #endif
+#ifdef OS_LINUX
+        glXMakeCurrent(dis,None,NULL);
+        glXDestroyContext(dis,glx);
+#endif
     }
+#ifdef OS_LINUX
+    Context::Context(Display *d,X11Window w,XVisualInfo *v): logger("OpenGL"), dis(d), win(w), vinfo(v)
+    {
+        logger.info("Creating Context...");
+        glx = glXCreateContext(dis,vinfo,NULL,GL_TRUE);
+        glXMakeCurrent(dis,win,glx);
+    }
+#endif
 }

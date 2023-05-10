@@ -4,9 +4,24 @@
 
 #include <iostream>
 
-void sauce(void* b)
+void draw(KitsunEngine::Window &win)
 {
+    auto size = win.getRect().getSize();
+    glViewport(0,0,size.getX(),size.getY());
+    glClearColor(0.5,0.5,0.5,1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
 
+    glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
+        glColor3f(1.0f, 0.0f, 0.0f); // Red
+        glVertex2f(-0.5f, -0.5f);    // x, y
+        glVertex2f( 0.5f, -0.5f);
+        glVertex2f( 0.5f,  0.5f);
+        glVertex2f(-0.5f,  0.5f);
+    glEnd();
+    glFlush();
+#ifdef OS_LINUX
+    glXSwapBuffers(win,win);
+#endif
 }
 
 #ifdef OS_WINDOWS
@@ -17,8 +32,13 @@ int APIENTRY WinMain(HINSTANCE instance,HINSTANCE prevInstance,PSTR cmdline,int 
 int main(int argc,char** argv)
 {
 #endif
+    KitsunEngine::Utils::Logger logger("Main");
     KitsunEngine::Window window(1280,720);
-    KitsunEngine::Context ctx(window);
+    KitsunEngine::Context ctx(window
+#ifdef OS_LINUX
+    ,window,window
+#endif
+    );
 
     window.setTitle("Balls");
 
@@ -30,12 +50,17 @@ int main(int argc,char** argv)
     auto opengl = glGetString(GL_VERSION);
     auto vendor = glGetString(GL_VENDOR);
     auto openglu = gluGetString(GLU_VERSION);
-    auto hehe = sauce;
 
-    hehe(new int(10));
+    std::string OpenGL;
+        OpenGL
+        .append((const char*)opengl).append(" | ")
+        .append((const char*)vendor).append(" | ")
+        .append((const char*)openglu);
 
-    std::cout << opengl << " | " << vendor << " | " << openglu << std::endl;
-    std::cout << KitsunEngine::Utils::File::getCWD() << std::endl; 
+    logger.info(OpenGL);
+    logger.info(KitsunEngine::Utils::File::getCWD());
+
+    glEnable(GL_DEPTH_TEST);
 
     while(window.isRunning())
     {
@@ -47,21 +72,12 @@ int main(int argc,char** argv)
         {
             case KitsunEngine::Window::MessageState::Type::Close:
                 return EXIT_SUCCESS;
+            case KitsunEngine::Window::MessageState::Type::Draw:
+                draw(window);
+                break;
             default:
                 break;
         }
-        glViewport(0,0,size.getX(),size.getY());
-        glClearColor(0.5,0.5,0.5,1.0);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
-            glColor3f(1.0f, 0.0f, 0.0f); // Red
-            glVertex2f(-0.5f, -0.5f);    // x, y
-            glVertex2f( 0.5f, -0.5f);
-            glVertex2f( 0.5f,  0.5f);
-            glVertex2f(-0.5f,  0.5f);
-        glEnd();
-        glFlush();
     }
 
     return EXIT_SUCCESS;

@@ -1,6 +1,12 @@
 if(WIN32)
-    add_library(kitsunengine-window STATIC win32.cpp)
+    set(OS_SOURCE win32.cpp)
 endif(WIN32)
+
+if(UNIX)
+    set(OS_SOURCE linux.cpp)
+endif(UNIX)
+
+add_library(kitsunengine-window STATIC window.cpp ${OS_SOURCE})
 
 target_include_directories(kitsunengine-window PRIVATE include)
 

@@ -85,7 +85,7 @@ namespace KitsunEngine
             y *= scalar;
             return *this;
         }
-        std::ostream &KitsunEngine::Utils::operator<<(std::ostream &os, const Vector2 &vec)
+        std::ostream &operator<<(std::ostream &os, const Vector2 &vec)
         {
             os << '(' << vec.x << '|' << vec.y << ')';
             return os;
@@ -172,7 +172,7 @@ namespace KitsunEngine
             z *= scalar;
             return *this;
         }
-        std::ostream &KitsunEngine::Utils::operator<<(std::ostream &os, const Vector3 &vec)
+        std::ostream &operator<<(std::ostream &os, const Vector3 &vec)
         {
             os << '(' << vec.x << '|' << vec.y << '|' << vec.z << ')';
             return os;

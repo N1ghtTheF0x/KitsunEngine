@@ -157,23 +157,11 @@ namespace KitsunEngine
     {
         SetWindowText(handle,char2wstr(title));
     }
-    bool Window::isRunning()
-    {
-        return running;
-    }
     void Window::close()
     {
         running = false;
         DestroyWindow(handle);
         PostQuitMessage(EXIT_SUCCESS);
-    }
-    Window::State* Window::getState()
-    {
-        return curState;
-    }
-    Window::MessageState& Window::getMessage()
-    {
-        return curState->message;
     }
     Utils::Rectangle Window::getRect()
     {

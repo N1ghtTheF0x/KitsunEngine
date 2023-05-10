@@ -97,7 +97,7 @@ namespace KitsunEngine
         {
             return toDateString() + " " + toTimeString();
         }
-        std::ostream &KitsunEngine::Utils::operator<<(std::ostream &os, const Date &date)
+        std::ostream &operator<<(std::ostream &os, const Date &date)
         {
             os << date.toString();
             return os;

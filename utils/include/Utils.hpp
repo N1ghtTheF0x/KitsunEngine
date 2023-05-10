@@ -5,7 +5,13 @@
     #include <windows.h>
 #endif
 
+#ifdef OS_LINUX
+    #include <X11/X.h>
+    typedef Window X11Window;
+#endif
+
 #include <ctime>
+#include <cmath>
 #include <iostream>
 #include <string>
 #include <sstream>

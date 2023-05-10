@@ -26,6 +26,12 @@ message(STATUS "Operating System: ${CMAKE_SYSTEM_NAME}")
 string(TOUPPER ${CMAKE_SYSTEM_NAME} OS_NAME)
 add_compile_definitions(OS_${OS_NAME} OS_NAME="${CMAKE_SYSTEM_NAME}")
 
+if(UNIX)
+    find_package(X11 REQUIRED)
+    link_libraries(${X11_LIBRARIES})
+    include_directories(${X11_INCLUDE_DIR})
+endif(UNIX)
+
 add_subdirectory(utils)
 add_subdirectory(input)
 add_subdirectory(window)

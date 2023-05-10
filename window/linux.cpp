@@ -1,0 +1,115 @@
+#include <Window.hpp>
+#include <Input.hpp>
+
+#include <GL/glx.h>
+
+GLint vinfo_attr[] = {
+    GLX_RGBA,GLX_DEPTH_SIZE,24,GLX_DOUBLEBUFFER,None
+};
+
+namespace KitsunEngine
+{
+    Window::operator Display*()
+    {
+        return dis;
+    }
+    Window::operator X11Window &()
+    {
+        return win;
+    }
+    Window::operator XVisualInfo *()
+    {
+        return vinfo;
+    }
+    Colormap &Window::getColormap()
+    {
+        return cmap;
+    }
+    Window::Window(unsigned int width,unsigned int height): logger("Window")
+    {
+        running = false;
+        logger.info("Creating Window using X11...");
+
+        curState = new State;
+        curState->window = this;
+
+        XSetWindowAttributes swa;
+
+        dis = XOpenDisplay((char*)0);
+        screen = DefaultScreen(dis);
+        auto root = DefaultRootWindow(dis);
+
+        vinfo = glXChooseVisual(dis,screen,vinfo_attr);
+        if(vinfo == NULL)
+        {
+            logger.error("Couldn't choose Visual Info!");
+            exit(EXIT_FAILURE);
+        }
+        cmap = XCreateColormap(dis,root,vinfo->visual,AllocNone);
+
+        swa.colormap = cmap;
+        swa.event_mask = ExposureMask | KeyPressMask;
+
+        win = XCreateWindow(dis,root,0,0,width,height,0,vinfo->depth,InputOutput,vinfo->visual,CWColormap | CWEventMask,&swa);
+
+        XMapWindow(dis,win);
+
+        setTitle(LINUX_DEFAULT_WINDOW_TITLE);
+
+        logger.info("Created Window!");
+        running = true;
+    }
+    Window::~Window()
+    {
+        logger.info("Destroying Window...");
+        close();
+    }
+    void Window::show()
+    {
+
+    }
+    void Window::close()
+    {
+        running = false;
+        XDestroyWindow(dis,win);
+        XCloseDisplay(dis);
+    }
+    void Window::hide()
+    {
+        XIconifyWindow(dis,win,screen);
+    }
+    void Window::setTitle(const char* title)
+    {
+        XStoreName(dis,win,title);
+    }
+    void Window::refreshMessages()
+    {
+        XEvent event;
+        KeySym key;
+        char text[0xFF];
+
+        using EventType = Window::MessageState::Type;
+
+        XNextEvent(dis,&event);
+
+        switch(event.type)
+        {
+            case Expose:
+                curState->message.type = EventType::Draw;
+                break;
+            case KeyPress:
+                curState->message.type = EventType::KeyboardDown;
+                XLookupString(&event.xkey,text,0xFF,&key,0);
+                Keyboard::setKeyState(text[0],event.xkey.type == KeyPress);
+                if(event.xkey.type == KeyPress) 
+                    Keyboard::setLastKeyPressed(text[0]);
+                break;
+        }
+    }
+    Utils::Rectangle Window::getRect()
+    {
+        XWindowAttributes attr;
+        XGetWindowAttributes(dis,win,&attr);
+        return Utils::Rectangle(attr.x,attr.y,attr.width,attr.height);
+    }
+}
