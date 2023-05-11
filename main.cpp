@@ -1,6 +1,7 @@
 #include <Window.hpp>
 #include <Input.hpp>
 #include <Renderer.hpp>
+#include <Image.hpp>
 
 #include <iostream>
 
@@ -11,12 +12,13 @@ void draw(KitsunEngine::Window &win)
     glClearColor(0.5,0.5,0.5,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
+    glBegin(GL_TRIANGLES);              // Each set of 4 vertices form a quad
         glColor3f(1.0f, 0.0f, 0.0f); // Red
         glVertex2f(-0.5f, -0.5f);    // x, y
+        glColor3f(0.0f,1.0f,0.0f);
         glVertex2f( 0.5f, -0.5f);
+        glColor3f(0.0f,0.0f,1.0f);
         glVertex2f( 0.5f,  0.5f);
-        glVertex2f(-0.5f,  0.5f);
     glEnd();
     glFlush();
 #ifdef OS_LINUX
@@ -44,20 +46,14 @@ int main(int argc,char** argv)
 
     KitsunEngine::Utils::Color color(0xAA,0xBB,0xCC);
     KitsunEngine::Utils::Date date(0);
+    KitsunEngine::Utils::File bmpFile("test.bmp",std::ios::binary | std::ios::out | std::ios::in);
+    KitsunEngine::Utils::Buffer bmpBuf(bmpFile);
+    KitsunEngine::ImageFormats::BMP bmp;
+
+    bmpBuf.read((char*)&bmp,sizeof(bmp));
 
     unsigned int numColor = color;
 
-    auto opengl = glGetString(GL_VERSION);
-    auto vendor = glGetString(GL_VENDOR);
-    auto openglu = gluGetString(GLU_VERSION);
-
-    std::string OpenGL;
-        OpenGL
-        .append((const char*)opengl).append(" | ")
-        .append((const char*)vendor).append(" | ")
-        .append((const char*)openglu);
-
-    logger.info(OpenGL);
     logger.info(KitsunEngine::Utils::File::getCWD());
 
     glEnable(GL_DEPTH_TEST);
@@ -66,16 +62,14 @@ int main(int argc,char** argv)
     {
         window.refreshMessages();
         auto msg = window.getMessage();
-        auto mpos = KitsunEngine::Mouse::getPosition();
-        auto size = window.getRect().getSize();
-        switch(msg.type)
+        switch(msg)
         {
-            case KitsunEngine::Window::MessageState::Type::Close:
+            case KitsunEngine::Window::MessageType::Close:
                 return EXIT_SUCCESS;
-            case KitsunEngine::Window::MessageState::Type::Draw:
+            case KitsunEngine::Window::MessageType::Draw:
                 draw(window);
                 break;
-            case KitsunEngine::Window::MessageState::Type::KeyboardDown:
+            case KitsunEngine::Window::MessageType::KeyboardDown:
                 std::cout << KitsunEngine::Keyboard::getLastKeyPressed() << std::endl;
                 break;
             default:

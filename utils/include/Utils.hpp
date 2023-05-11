@@ -172,6 +172,8 @@ namespace KitsunEngine
             File(const char* path,std::ios_base::openmode mode);
             File(std::string path,std::ios_base::openmode mode);
             File(std::stringstream path,std::ios_base::openmode mode);
+            operator std::fstream&();
+            operator std::streambuf*();
             ~File();
             bool canRead();
             bool canWrite();
@@ -207,6 +209,7 @@ namespace KitsunEngine
             size_t size();
             void clear();
             // Read
+            void read(char* buffer,size_t size);
             size_t getReadOffset();
             void setReadOffset(size_t pos);
             char readInt8();char readChar();
@@ -223,6 +226,7 @@ namespace KitsunEngine
             const char* readString();
             const char* readString(size_t length);
             // Write
+            void write(char* buffer,size_t size);
             size_t getWriteOffset();
             void setWriteOffset(size_t pos);
             void writeInt8(char value);void writeChar(char value);

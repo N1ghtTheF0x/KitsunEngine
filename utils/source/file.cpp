@@ -18,6 +18,14 @@ namespace KitsunEngine
         {
             stream.open(path,mode);
         }
+        File::operator std::fstream &()
+        {
+            return stream;
+        }
+        File::operator std::streambuf *()
+        {
+            return stream.rdbuf();
+        }
         File::~File()
         {
             stream.close();

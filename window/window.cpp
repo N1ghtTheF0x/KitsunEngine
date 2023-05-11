@@ -10,7 +10,7 @@ namespace KitsunEngine
     {
         return curState;
     }
-    Window::MessageState &Window::getMessage()
+    Window::MessageType &Window::getMessage()
     {
         return curState->message;
     }

@@ -24,27 +24,22 @@ namespace KitsunEngine
     class Window
     {
     public:
-        struct MessageState
+        enum struct MessageType
         {
-            enum struct Type
-            {
-                Nothing,
-                KeyboardDown,
-                KeyboardUp,
-                MouseDown,
-                MouseUp,
-                Close,
-                MouseMove,
-                Ready,
-                Draw
-            };
-            Type type;
-            
+            Nothing,
+            KeyboardDown,
+            KeyboardUp,
+            MouseDown,
+            MouseUp,
+            Close,
+            MouseMove,
+            Ready,
+            Draw
         };
         struct State
         {
             Window *window;
-            MessageState message;
+            MessageType message;
         };
     private:
         Utils::Logger logger;
@@ -93,7 +88,7 @@ namespace KitsunEngine
         // OS-Independent
         bool isRunning();
         State* getState();
-        MessageState &getMessage();
+        MessageType &getMessage();
     };
 }
 

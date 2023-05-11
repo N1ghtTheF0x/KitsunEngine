@@ -27,7 +27,8 @@ namespace KitsunEngine::Utils
     {
         length = file.size();
         buffer = new char[length];
-        file.read(buffer,length);
+        std::streambuf* sbuf = file;
+        sbuf->sgetn(buffer,length);
     }
     Buffer::Buffer(size_t size): length(size)
     {
@@ -60,6 +61,18 @@ namespace KitsunEngine::Utils
     void Buffer::setWriteOffset(size_t pos)
     {
         writeOffset = pos;
+    }
+    void Buffer::read(char* output,size_t size)
+    {
+        auto pos = buffer + readOffset;
+        memcpy(output,pos,size);
+        readOffset += size;
+    }
+    void Buffer::write(char* input,size_t size)
+    {
+        auto pos = buffer + writeOffset;
+        memcpy(pos,input,size);
+        writeOffset += size;
     }
     char Buffer::readInt8()
     {

@@ -32,11 +32,18 @@ if(UNIX)
     include_directories(${X11_INCLUDE_DIR})
 endif(UNIX)
 
+find_package(Threads REQUIRED)
+link_libraries(Threads::Threads)
+
 add_subdirectory(utils)
+
+link_libraries(kitsunengine-utils)
+include_directories(utils/include)
+
 add_subdirectory(input)
 add_subdirectory(window)
 add_subdirectory(renderer)
-add_subdirectory(audio)
+add_subdirectory(media)
 
 if(WIN32)
     set(SETUP_WINDOWS WIN32)
@@ -44,5 +51,5 @@ endif(WIN32)
 
 add_executable(kitsunengine ${SETUP_WINDOWS} main.cpp)
 
-target_include_directories(kitsunengine PRIVATE window/include utils/include input/include renderer/include audio/include)
-target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input kitsunengine-renderer kitsunengine-audio)
+target_include_directories(kitsunengine PRIVATE window/include utils/include input/include renderer/include media/include)
+target_link_libraries(kitsunengine PRIVATE kitsunengine-window kitsunengine-utils kitsunengine-input kitsunengine-renderer kitsunengine-media)

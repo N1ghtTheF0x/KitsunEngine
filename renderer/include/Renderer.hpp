@@ -3,15 +3,15 @@
 
 #ifdef OS_WINDOWS
     #include <windows.h>
-    #include <GL/gl.h>
-    #include <GL/glu.h>
 #endif
 #ifdef OS_LINUX
     #include <X11/X.h>
     #include <X11/Xlib.h>
     #include <GL/glx.h>
-    #include <GL/glu.h>
 #endif
+
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 #include <Utils.hpp>
 
@@ -21,6 +21,7 @@ namespace KitsunEngine
     {
     private:
         Utils::Logger logger;
+        void printVersion();
 #ifdef OS_WINDOWS
     private:
         HGLRC wgl;

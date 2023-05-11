@@ -89,6 +89,13 @@ namespace KitsunEngine
     void Window::setTitle(const char* title)
     {
         XStoreName(dis,win,title);
+        XClassHint *hint = XAllocClassHint();
+        if(hint)
+        {
+            hint->res_name = hint->res_class = (char*)title;
+            XSetClassHint(dis,win,hint);
+            XFree(hint);
+        }
     }
     void Window::refreshMessages()
     {
@@ -96,35 +103,35 @@ namespace KitsunEngine
         KeySym key;
         char text[0xFF];
 
-        using EventType = Window::MessageState::Type;
+        using EventType = Window::MessageType;
 
         XNextEvent(dis,&event);
 
         switch(event.type)
         {
             case Expose:
-                curState->message.type = EventType::Draw;
+                curState->message = EventType::Draw;
                 break;
             case CreateNotify:
-                curState->message.type = EventType::Ready;
+                curState->message = EventType::Ready;
                 break;
             case DestroyNotify:
-                curState->message.type = EventType::Close;
+                curState->message = EventType::Close;
                 close();
                 break;
             case KeyPress:
-                curState->message.type = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
+                curState->message = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
                 XLookupString(&event.xkey,text,0xFF,&key,0);
                 Keyboard::setKeyState(text[0],event.xkey.type == KeyPress);
                 if(event.xkey.type == KeyPress) 
                     Keyboard::setLastKeyPressed(text[0]);
                 break;
             case ButtonPress:
-                curState->message.type = event.xbutton.type == ButtonPress ? EventType::MouseDown : EventType::MouseUp;
+                curState->message = event.xbutton.type == ButtonPress ? EventType::MouseDown : EventType::MouseUp;
                 Mouse::setButtonPressed((Mouse::Button)(event.xbutton.button-1),event.xbutton.type == ButtonPress);
                 break;
             case MotionNotify:
-                curState->message.type = EventType::MouseMove;
+                curState->message = EventType::MouseMove;
                 Mouse::setPosition(event.xbutton.x,event.xbutton.y);
                 break;
         }
