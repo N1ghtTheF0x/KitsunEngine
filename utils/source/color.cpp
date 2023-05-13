@@ -8,6 +8,13 @@ namespace KitsunEngine
         {
 
         }
+        Color::Color(unsigned int value)
+        {
+            alpha = (unsigned char)(value & 0xFF);
+            blue = (unsigned char)((value & 0xFF00) >> 8);
+            green = (unsigned char)((value & 0xFF0000) >> 16);
+            red = (unsigned char)((value & 0xFF000000) >> 24);
+        }
         Color::operator unsigned int()
         {
             return ((unsigned int)red << 24) | ((unsigned int)green << 16) | ((unsigned int)blue << 8) | (unsigned int)alpha;

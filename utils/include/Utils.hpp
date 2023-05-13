@@ -23,6 +23,12 @@ namespace KitsunEngine
 {
     namespace Utils
     {
+#ifdef OS_WINDOWS
+        namespace Win32
+        {
+            void initConsole();
+        }
+#endif
         double rad2deg(double rad);
         double deg2rad(double deg);
         class Vector2
@@ -111,6 +117,7 @@ namespace KitsunEngine
             unsigned char blue;
             unsigned char alpha;
         public:
+            Color(const unsigned int value);
             Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a = 255U);
             unsigned char getRed();
             unsigned char getGreen();

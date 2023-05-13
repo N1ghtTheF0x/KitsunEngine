@@ -7,7 +7,11 @@ namespace KitsunEngine
         auto opengl = glGetString(GL_VERSION);
         auto renderer = glGetString(GL_RENDERER);
         auto vendor = glGetString(GL_VENDOR);
+        auto extensions = glGetString(GL_EXTENSIONS);
+        
+#ifdef OS_LINUX
         auto glsl = glGetString(GL_SHADING_LANGUAGE_VERSION);
+#endif
         auto openglu = gluGetString(GLU_VERSION);
 
         std::string OpenGL;
@@ -15,8 +19,11 @@ namespace KitsunEngine
             .append((const char*)opengl).append(" | ")
             .append((const char*)vendor).append(" | ")
             .append((const char*)renderer).append(" | ")
+#ifdef OS_LINUX
             .append((const char*)glsl).append(" | ")
-            .append((const char*)openglu);
+#endif
+            .append((const char*)openglu).append(" | ")
+            .append((const char*)extensions);
 
         logger.info(OpenGL);
     }
@@ -51,4 +58,13 @@ namespace KitsunEngine
         printVersion();
     }
 #endif
+    void Context::swapBuffers()
+    {
+#ifdef OS_LINUX
+        glXSwapBuffers(win,win);
+#endif
+#ifdef OS_WINDOWS
+        SwapBuffers(gdi);
+#endif
+    }
 }

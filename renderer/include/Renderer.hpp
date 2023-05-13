@@ -40,6 +40,8 @@ namespace KitsunEngine
 #endif
     public:
         ~Context();
+        void swapBuffers();
+        void drawRectangle(Utils::Rectangle &rect,Utils::Color color = 255);
     };
 }
 

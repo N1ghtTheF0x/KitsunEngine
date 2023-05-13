@@ -35,9 +35,9 @@ namespace KitsunEngine
                 };
                 enum struct Compression : unsigned int
                 {
-                    BI_RGB,
-                    BI_RLE8,
-                    BI_RLE4
+                    RedGreenBlue,
+                    RLE8,
+                    RLE4
                 };
                 unsigned int size;
                 unsigned int width;

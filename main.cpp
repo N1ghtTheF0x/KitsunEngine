@@ -5,31 +5,34 @@
 
 #include <iostream>
 
-void draw(KitsunEngine::Window &win)
+void draw_loop(KitsunEngine::Window &win,KitsunEngine::Context &ctx)
 {
     auto size = win.getRect().getSize();
     glViewport(0,0,size.getX(),size.getY());
     glClearColor(0.5,0.5,0.5,1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-    glBegin(GL_TRIANGLES);              // Each set of 4 vertices form a quad
+    KitsunEngine::Utils::Rectangle rect(-0.5,0.5,0.5,0.5);
+
+    ctx.drawRectangle(rect,0xFF000000);
+
+    /*glBegin(GL_TRIANGLES);              // Each set of 4 vertices form a quad
         glColor3f(1.0f, 0.0f, 0.0f); // Red
         glVertex2f(-0.5f, -0.5f);    // x, y
         glColor3f(0.0f,1.0f,0.0f);
         glVertex2f( 0.5f, -0.5f);
         glColor3f(0.0f,0.0f,1.0f);
         glVertex2f( 0.5f,  0.5f);
-    glEnd();
-    glFlush();
-#ifdef OS_LINUX
-    glXSwapBuffers(win,win);
-#endif
+    glEnd();*/
+    ctx.swapBuffers();
 }
 
 #ifdef OS_WINDOWS
 int APIENTRY WinMain(HINSTANCE instance,HINSTANCE prevInstance,PSTR cmdline,int cmdshow)
 {
-    char** argv = __argv;int argc = __argc;
+    int argc = __argc;
+    char** argv = __argv;
+    KitsunEngine::Utils::Win32::initConsole();
 #else
 int main(int argc,char** argv)
 {
@@ -46,11 +49,6 @@ int main(int argc,char** argv)
 
     KitsunEngine::Utils::Color color(0xAA,0xBB,0xCC);
     KitsunEngine::Utils::Date date(0);
-    KitsunEngine::Utils::File bmpFile("test.bmp",std::ios::binary | std::ios::out | std::ios::in);
-    KitsunEngine::Utils::Buffer bmpBuf(bmpFile);
-    KitsunEngine::ImageFormats::BMP bmp;
-
-    bmpBuf.read((char*)&bmp,sizeof(bmp));
 
     unsigned int numColor = color;
 
@@ -67,12 +65,10 @@ int main(int argc,char** argv)
             case KitsunEngine::Window::MessageType::Close:
                 return EXIT_SUCCESS;
             case KitsunEngine::Window::MessageType::Draw:
-                draw(window);
+                draw_loop(window,ctx);
                 break;
             case KitsunEngine::Window::MessageType::KeyboardDown:
                 std::cout << KitsunEngine::Keyboard::getLastKeyPressed() << std::endl;
-                break;
-            default:
                 break;
         }
     }

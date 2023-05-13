@@ -45,13 +45,15 @@ namespace KitsunEngine
     }
     LRESULT CALLBACK Window::WindowProc(HWND handle,UINT message,WPARAM wparam,LPARAM lparam)
     {
+        using Event = Window::MessageType;
+
         Window::State *state;
         if(message == WM_CREATE)
         {
             CREATESTRUCT *create = reinterpret_cast<CREATESTRUCT*>(lparam);
             state = reinterpret_cast<Window::State*>(create->lpCreateParams);
             SetWindowLongPtr(handle,GWLP_USERDATA,(LONG_PTR)state);
-            state->message.type = Window::MessageState::Type::Ready;
+            state->message = Event::Ready;
 
             state->window->gdi = GetDC(handle);
             state->window->pixelFormat = ChoosePixelFormat(state->window->gdi,&pfd);
@@ -61,33 +63,29 @@ namespace KitsunEngine
         switch(message)
         {
             default:
-                if(state != nullptr) state->message.type = Window::MessageState::Type::Nothing;
+                if(state != nullptr) state->message = Event::Nothing;
                 break;
             case WM_KEYDOWN:
-                state->message.type = Window::MessageState::Type::KeyboardDown;
+                state->message = Event::KeyboardDown;
                 Keyboard::setKeyState(wparam,true);
                 Keyboard::setLastKeyPressed(wparam);
                 return 0;
             case WM_KEYUP:
-                state->message.type = Window::MessageState::Type::KeyboardUp;
+                state->message = Event::KeyboardUp;
                 Keyboard::setKeyState(wparam,false);
                 return 0;
             case WM_DESTROY:
-                state->message.type = Window::MessageState::Type::Close;
+            case WM_CLOSE:
+            case WM_QUIT:
+                state->message = Event::Close;
+                state->window->running = false;
                 return 0;
             case WM_MOUSEMOVE:
-                state->message.type = Window::MessageState::Type::MouseMove;
+                state->message = Event::MouseMove;
                 Mouse::setPosition(GET_X_LPARAM(lparam),GET_Y_LPARAM(lparam));
                 return 0;
             case WM_PAINT:
-                {
-                    PAINTSTRUCT ps;
-                    HDC hdc = BeginPaint(handle, &ps);
-
-                    
-
-                    EndPaint(handle, &ps);
-                }
+                state->message = Event::Draw;
                 return 0;
         }
         return DefWindowProc(handle,message,wparam,lparam);
