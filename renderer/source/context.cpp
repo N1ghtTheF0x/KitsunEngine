@@ -7,7 +7,6 @@ namespace KitsunEngine
         auto opengl = glGetString(GL_VERSION);
         auto renderer = glGetString(GL_RENDERER);
         auto vendor = glGetString(GL_VENDOR);
-        auto extensions = glGetString(GL_EXTENSIONS);
         
 #ifdef OS_LINUX
         auto glsl = glGetString(GL_SHADING_LANGUAGE_VERSION);
@@ -22,8 +21,7 @@ namespace KitsunEngine
 #ifdef OS_LINUX
             .append((const char*)glsl).append(" | ")
 #endif
-            .append((const char*)openglu).append(" | ")
-            .append((const char*)extensions);
+            .append((const char*)openglu);
 
         logger.info(OpenGL);
     }
