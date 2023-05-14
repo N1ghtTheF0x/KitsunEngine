@@ -6,6 +6,7 @@
 #endif
 
 #ifdef OS_LINUX
+    #include <execinfo.h>
     #include <X11/X.h>
     typedef Window X11Window;
 #endif
@@ -82,6 +83,14 @@ namespace KitsunEngine
             void setSize(Vector2 &size);
             void setSize(double width,double height);
             BBox getBBox();
+            double getX();
+            double getY();
+            double getWidth();
+            double getHeight();
+            void setX(double x);
+            void setY(double y);
+            void setWidth(double width);
+            void setHeight(double height);
         };
         class Vector3
         {
@@ -158,15 +167,16 @@ namespace KitsunEngine
         private:
             const char* label;
         public:
+            static void printStacktrace();
             Logger(const char* label);
             Logger(std::string label);
             Logger(std::stringstream label);
-            void info(const char* message);
-            void info(std::string message);
-            void info(std::stringstream stream);
-            void error(const char* message);
-            void error(std::string message);
-            void error(std::stringstream stream);
+            void info(const char* message) const;
+            void info(std::string message) const;
+            void info(std::stringstream stream) const;
+            void error(const char* message) const;
+            void error(std::string message) const;
+            void error(std::stringstream stream) const;
         };
         class File
         {
@@ -176,6 +186,9 @@ namespace KitsunEngine
             Logger logger;
         public:
             static const char* getCWD();
+            static bool exists(const char* path);
+            static bool exists(std::string path);
+            static bool exists(std::stringstream path);
             File(const char* path,std::ios_base::openmode mode);
             File(std::string path,std::ios_base::openmode mode);
             File(std::stringstream path,std::ios_base::openmode mode);

@@ -57,5 +57,37 @@ namespace KitsunEngine
         {
             size.setX(width);size.setY(height);
         }
+        double Rectangle::getX()
+        {
+            return position.getX();
+        }
+        double Rectangle::getY()
+        {
+            return position.getY();
+        }
+        double Rectangle::getWidth()
+        {
+            return size.getX();
+        }
+        double Rectangle::getHeight()
+        {
+            return size.getY();
+        }
+        void Rectangle::setX(double x)
+        {
+            position.setX(x);
+        }
+        void Rectangle::setY(double y)
+        {
+            position.setY(y);
+        }
+        void Rectangle::setWidth(double w)
+        {
+            size.setX(w);
+        }
+        void Rectangle::setHeight(double h)
+        {
+            size.setY(h);
+        }
     }
 }

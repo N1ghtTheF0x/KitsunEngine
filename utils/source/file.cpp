@@ -81,5 +81,17 @@ namespace KitsunEngine
         {
             return std::filesystem::file_size(path);
         }
+        bool File::exists(const char* path)
+        {
+            return std::filesystem::exists(path);
+        }
+        bool File::exists(std::string path)
+        {
+            return exists(path.c_str());
+        }
+        bool File::exists(std::stringstream path)
+        {
+            return exists(path.str());
+        }
     }
 }

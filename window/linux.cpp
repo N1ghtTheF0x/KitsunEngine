@@ -119,6 +119,9 @@ namespace KitsunEngine
                 curState->message = EventType::Close;
                 close();
                 break;
+            case ClientMessage:
+                
+                break;
             case KeyPress:
                 curState->message = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
                 XLookupString(&event.xkey,text,0xFF,&key,0);

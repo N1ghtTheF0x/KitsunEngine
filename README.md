@@ -2,6 +2,10 @@
 
 A Game Engine using native APIs of the operating system
 
+## Cross-Plattform
+
+OpenAL is used for audio playback. OpenAl is licensed under the [LGPL v2 License][openal-license]
+
 ## Windows
 
 Windows uses the `win32`-API for the window
@@ -15,6 +19,8 @@ Used [this][khronos-opengl-guide] and [this][x11-guide] as a starting point
 ## MacOS
 
 Sorry guys, but I'm gonna be the same asshole like Apple. (No Mac? No Support! Fair and square!)
+
+[openal-license]: https://raw.githubusercontent.com/kcat/openal-soft/master/COPYING
 
 [x11-guide]: http://mech.math.msu.su/~vvb/2course/Borisenko/CppProjects/GWindow/xintro.html
 [x11-license]: https://raw.githubusercontent.com/mirror/libX11/master/COPYING

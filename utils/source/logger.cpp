@@ -19,31 +19,47 @@ namespace KitsunEngine
         {
 
         }
-        void Logger::info(const char* message)
+        void Logger::info(const char* message) const
         {
             Date date;
             std::cout << '[' << date.toTimeString() << "] [" << label << "/INFO]: " << message << std::endl;
         }
-        void Logger::info(std::string message)
+        void Logger::info(std::string message) const
         {
             info(message.c_str());
         }
-        void Logger::info(std::stringstream stream)
+        void Logger::info(std::stringstream stream) const
         {
             info(stream.str());
         }
-        void Logger::error(const char* message)
+        void Logger::error(const char* message) const
         {
             Date date;
             std::cerr << '[' << date.toTimeString() << "] [" << label << "/ERROR]: " << message << std::endl;
         }
-        void Logger::error(std::string message)
+        void Logger::error(std::string message) const
         {
             error(message.c_str());
         }
-        void Logger::error(std::stringstream stream)
+        void Logger::error(std::stringstream stream) const
         {
             error(stream.str());
+        }
+        void Logger::printStacktrace()
+        {
+#ifdef OS_LINUX
+            #define BUFFER_SIZE 256
+            void* buffer[BUFFER_SIZE];
+            auto addresses = backtrace(buffer,BUFFER_SIZE);
+            auto symbols = backtrace_symbols(buffer,addresses);
+            if(symbols != NULL)
+                for(int index = 0;index < addresses;index++)
+                    std::cout << symbols[index] << std::endl;
+            free(symbols);
+#endif
+#ifdef OS_WINDOWS
+            https://learn.microsoft.com/en-us/windows/win32/debug/capturestackbacktrace
+#endif
         }
     }
 }

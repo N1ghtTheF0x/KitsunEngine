@@ -59,10 +59,20 @@ namespace KitsunEngine
     void Context::swapBuffers()
     {
 #ifdef OS_LINUX
-        glXSwapBuffers(win,win);
+        glXSwapBuffers(dis,win);
 #endif
 #ifdef OS_WINDOWS
         SwapBuffers(gdi);
 #endif
+    }
+    Utils::Rectangle Context::getViewport()
+    {
+        int viewport[4];
+        glGetIntegerv(GL_VIEWPORT,viewport);
+        return Utils::Rectangle(viewport[0],viewport[1],viewport[2],viewport[3]);
+    }
+    void Context::setViewport(Utils::Rectangle &rect)
+    {
+        glViewport(rect.getX(),rect.getY(),rect.getWidth(),rect.getWidth());
     }
 }

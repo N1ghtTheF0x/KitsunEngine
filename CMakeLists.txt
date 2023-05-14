@@ -35,6 +35,9 @@ endif(UNIX)
 find_package(Threads REQUIRED)
 link_libraries(Threads::Threads)
 
+set(ALSOFT_EXAMPLES OFF)
+set(ALSOFT_UTILS OFF)
+add_subdirectory(media/openal)
 add_subdirectory(utils)
 
 link_libraries(kitsunengine-utils)

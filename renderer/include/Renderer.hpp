@@ -42,6 +42,8 @@ namespace KitsunEngine
         ~Context();
         void swapBuffers();
         void drawRectangle(Utils::Rectangle &rect,Utils::Color color = 255);
+        static Utils::Rectangle getViewport();
+        static void setViewport(Utils::Rectangle &rect);
     };
 }
 
