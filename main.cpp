@@ -14,7 +14,7 @@ void draw_loop(KitsunEngine::Window &win,KitsunEngine::Context &ctx)
     glClearColor(0.5,0.5,0.5,1.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-    KitsunEngine::Utils::Rectangle a(-0.5,0.5,0.5,0.5);
+    KitsunEngine::Utils::Rectangle a(200,200,150,150);
 
     ctx.drawRectangle(a,0xFF000000);
     /*glBegin(GL_TRIANGLES);              // Each set of 4 vertices form a quad

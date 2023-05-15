@@ -100,9 +100,6 @@ namespace KitsunEngine
     void Window::refreshMessages()
     {
         XEvent event;
-        KeySym key;
-        char text[0xFF];
-
         using EventType = Window::MessageType;
 
         XNextEvent(dis,&event);
@@ -124,10 +121,9 @@ namespace KitsunEngine
                 break;
             case KeyPress:
                 curState->message = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
-                XLookupString(&event.xkey,text,0xFF,&key,0);
-                Keyboard::setKeyState(text[0],event.xkey.type == KeyPress);
+                Keyboard::setKeyState(event.xkey.keycode,event.xkey.type == KeyPress);
                 if(event.xkey.type == KeyPress) 
-                    Keyboard::setLastKeyPressed(text[0]);
+                    Keyboard::setLastKeyPressed(event.xkey.keycode);
                 break;
             case ButtonPress:
                 curState->message = event.xbutton.type == ButtonPress ? EventType::MouseDown : EventType::MouseUp;

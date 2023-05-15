@@ -2,19 +2,19 @@
 
 namespace KitsunEngine
 {
-    void Keyboard::setKeyState(char key,bool state)
+    void Keyboard::setKeyState(KeyType key,bool state)
     {
         keyState[key] = state;
     }
-    bool Keyboard::isKeyPressed(char key)
+    bool Keyboard::isKeyPressed(KeyType key)
     {
         return keyState[key];
     }
-    char Keyboard::getLastKeyPressed()
+    Keyboard::KeyType Keyboard::getLastKeyPressed()
     {
         return lastKey;
     }
-    void Keyboard::setLastKeyPressed(char key)
+    void Keyboard::setLastKeyPressed(KeyType key)
     {
         lastKey = key;
     }
