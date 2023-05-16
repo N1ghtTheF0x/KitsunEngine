@@ -1,6 +1,6 @@
 # KitsunEngine
 
-A Game Engine using native APIs of the operating system
+A Game Engine
 
 ## Cross-Plattform
 
