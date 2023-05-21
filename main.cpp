@@ -44,11 +44,9 @@ int kitsunmain(int argc,char** argv)
 
     window.setTitle("Balls");
 
-    KitsunEngine::Utils::Color color(0xAA,0xBB,0xCC);
+    KitsunEngine::Utils::Date curDate;
 
-    unsigned int numColor = color;
-
-    logger.info(KitsunEngine::Utils::File::getCWD());
+    logger.info(curDate.toString());
 
     glEnable(GL_DEPTH_TEST);
 
@@ -58,7 +56,6 @@ int kitsunmain(int argc,char** argv)
     {
         oldTime = curTime;
         curTime = KitsunEngine::Utils::Date();
-        logger.info(std::to_string(curTime - oldTime) + "ms");
         window.refreshMessages();
         auto msg = window.getMessage();
         switch(msg)

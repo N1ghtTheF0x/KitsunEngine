@@ -1,3 +1,5 @@
+include(../cmake/os.cmake)
+
 if(WIN32)
     set(OS_SOURCE win32.cpp)
 endif(WIN32)

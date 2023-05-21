@@ -3,26 +3,14 @@
 
 #include <Utils.hpp>
 
-#if OS_WINDOWS
-    #define KITSUNENGINE_INPUT_KEYBOARD_SIZE 0xFF
-#endif
-#if OS_LINUX
-    #define KITSUNENGINE_INPUT_KEYBOARD_SIZE 0xFFFFFFFF
-#endif
-
 namespace KitsunEngine
 {
     class Keyboard
     {
     public:
-#if OS_WINDOWS
         typedef char KeyType;
-#endif
-#if OS_LINUX
-        typedef unsigned int KeyType;
-#endif
     private:
-        static inline bool keyState[KITSUNENGINE_INPUT_KEYBOARD_SIZE];
+        static inline bool keyState[0xFF];
         static inline KeyType lastKey = 0;
     public:
         static void setKeyState(KeyType key,bool state);

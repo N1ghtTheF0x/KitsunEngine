@@ -48,7 +48,7 @@ namespace KitsunEngine
         void Logger::printStacktrace()
         {
 #ifdef OS_LINUX
-            #define BUFFER_SIZE 256
+            #define BUFFER_SIZE 512
             void* buffer[BUFFER_SIZE];
             auto addresses = backtrace(buffer,BUFFER_SIZE);
             auto symbols = backtrace_symbols(buffer,addresses);

@@ -16,13 +16,13 @@ const char* monthName[12] = {
 };
 
 const char* weekDayName[7] = {
+    "Sun",
     "Mon",
     "Tue",
     "Wed",
     "Thu",
     "Fri",
-    "Sat",
-    "Sun"
+    "Sat"
 };
 
 namespace KitsunEngine
@@ -32,8 +32,9 @@ namespace KitsunEngine
         Date::Date()
         {
             time = std::time(NULL);
+            date = localtime(&time);
         }
-        Date::Date(std::time_t t): time(t)
+        Date::Date(std::time_t t): time(t), date(localtime(&time))
         {
             
         }
@@ -47,31 +48,31 @@ namespace KitsunEngine
         }
         long long Date::getSeconds() const
         {
-            return time % 60;
+            return date->tm_sec;
         }
         int Date::getMinutes() const
         {
-            return (time / 60) % 60;
+            return date->tm_min;
         }
         int Date::getHours() const
         {
-            return (time / 3600) % 24;
+            return date->tm_hour;
         }
         int Date::getYears() const
         {
-            return (time / 31556926) + 1970;
+            return date->tm_year + 1900;
         }
         int Date::getDay() const
         {
-            return (time / 86400);
+            return date->tm_mday;
         }
         int Date::getMonth() const
         {
-            return (time / 2629743) % 12;
+            return date->tm_mon;
         }
         int Date::getWeek() const
         {
-            return (time / 604800) % 6;
+            return date->tm_wday;
         }
         std::string Date::toTimeString() const
         {

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
+include(cmake/os.cmake)
+
 project(KitsunEngine)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -26,6 +28,8 @@ message(STATUS "Operating System: ${CMAKE_SYSTEM_NAME}")
 string(TOUPPER ${CMAKE_SYSTEM_NAME} OS_NAME)
 add_compile_definitions(OS_${OS_NAME} OS_NAME="${CMAKE_SYSTEM_NAME}")
 
+# 3rd-Party
+
 if(UNIX)
     find_package(X11 REQUIRED)
     link_libraries(${X11_LIBRARIES})
@@ -38,6 +42,10 @@ link_libraries(Threads::Threads)
 set(ALSOFT_EXAMPLES OFF)
 set(ALSOFT_UTILS OFF)
 add_subdirectory(media/openal)
+add_subdirectory(other)
+
+# Game Engine Modules
+
 add_subdirectory(utils)
 
 link_libraries(kitsunengine-utils)

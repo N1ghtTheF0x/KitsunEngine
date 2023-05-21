@@ -28,10 +28,23 @@ namespace KitsunEngine
         namespace Win32
         {
             void initConsole();
+            bool isWine();
         }
 #endif
         double rad2deg(double rad);
         double deg2rad(double deg);
+        template <typename Type>
+        class Array
+        {
+        private:
+            Type *pointer;
+            size_t size;
+        public:
+            Array(Type *arr,size_t s);
+            size_t length();
+            Type* getValue(size_t index);
+            void setValue(size_t index,Type* value);
+        };
         class Vector2
         {
         private:
@@ -142,6 +155,7 @@ namespace KitsunEngine
         {
         private:
             std::time_t time;
+            struct std::tm *date;
         public:
             friend std::ostream& operator<<(std::ostream& os,const Date& vec);
             Date();
@@ -261,6 +275,17 @@ namespace KitsunEngine
             void writeDouble(double value);
             void writeLongDouble(long double value);
             void writeString(const char* value);
+        };
+        class Random
+        {
+        private:
+            const unsigned int seed;
+        public:
+            Random();
+            Random(const unsigned int seed);
+            operator int();
+            int range(int max);
+            int range(int min,int max);
         };
     }
 }

@@ -120,10 +120,15 @@ namespace KitsunEngine
                 
                 break;
             case KeyPress:
-                curState->message = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
-                Keyboard::setKeyState(event.xkey.keycode,event.xkey.type == KeyPress);
-                if(event.xkey.type == KeyPress) 
-                    Keyboard::setLastKeyPressed(event.xkey.keycode);
+                {
+                    char text[0xFF];
+                    KeySym key;
+                    XLookupString(&event.xkey,text,255,&key,0);
+                    curState->message = event.xkey.type == KeyPress ? EventType::KeyboardDown : EventType::KeyboardUp;
+                    Keyboard::setKeyState(text[0],event.xkey.type == KeyPress);
+                    if(event.xkey.type == KeyPress) 
+                    Keyboard::setLastKeyPressed(text[0]);
+                }
                 break;
             case ButtonPress:
                 curState->message = event.xbutton.type == ButtonPress ? EventType::MouseDown : EventType::MouseUp;
