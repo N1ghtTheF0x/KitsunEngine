@@ -1,0 +1,9 @@
+[submodule "OpenAL"]
+	path = media/openal
+	url = https://github.com/kcat/openal-soft
+[submodule "Lua"]
+	path = other/lua
+	url = https://github.com/lua/lua
+[submodule "Sol2"]
+	path = other/sol2
+	url = https://github.com/ThePhD/sol2
