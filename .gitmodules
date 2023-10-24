@@ -2,6 +2,3 @@
 	path = thirdparty/sdl
 	url = https://github.com/libsdl-org/SDL
 	branch = SDL2
-[submodule "ImGui"]
-	path = thirdparty/imgui
-	url = https://github.com/ocornut/imgui
