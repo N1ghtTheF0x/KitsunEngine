@@ -26,6 +26,9 @@ cmake --build ..
 4. ???
 5. profit
 
+# Nintendo (3)DS 
+
+I'm trying to make this work on a Nintendo DS/3DS but there's no code yet D:
 
 # 3th-Party License Stuff
 
