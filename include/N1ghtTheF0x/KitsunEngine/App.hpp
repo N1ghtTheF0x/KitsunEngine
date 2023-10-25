@@ -12,7 +12,9 @@ namespace N1ghtTheF0x
         private:
             Argv _argv;
         public:
+            Application();
             Application(int argc,char** argv);
+            int run();
         };
     }
 }

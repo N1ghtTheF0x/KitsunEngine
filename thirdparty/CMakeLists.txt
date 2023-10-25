@@ -5,6 +5,8 @@ set(SDL_TESTS OFF)
 set(SDL_INSTALL_TESTS OFF)
 add_subdirectory(sdl)
 # ImGui
-add_subdirectory(imgui)
+if(USE_IMGUI)
+    add_subdirectory(imgui)
+endif(USE_IMGUI)
 # Glad
 add_subdirectory(glad)

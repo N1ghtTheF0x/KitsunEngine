@@ -1,0 +1,54 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 22
+    },
+    "configurePresets": [
+        {
+            "name": "windows-msvc",
+            "displayName": "Windows (Visual Studio)",
+            "description": "Compiling using Visual Studio",
+            "generator": "Visual Studio 17 2022",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "architecture": {
+                "strategy": "external",
+                "value": "x64"
+            },
+            "hidden": true
+        },
+        {
+            "name": "windows-msvc-debug",
+            "displayName": "Windows (Visual Studio) Debug",
+            "description": "Compile using Visual Studio for Debug",
+            "inherits": "windows-msvc",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "windows-msvc-release",
+            "displayName": "Windows (Visual Studio) Release",
+            "description": "Compile using Visual Studio for Release",
+            "inherits": "windows-msvc",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "nintendo-ds",
+            "displayName": "Nintendo DS",
+            "description": "Compile for Nintendo DS",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/NDS.cmake",
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_MAKE_PROGRAM": "$env{DEVKITPRO}/msys2/usr/bin/make.exe"
+            }
+        }
+    ]
+}

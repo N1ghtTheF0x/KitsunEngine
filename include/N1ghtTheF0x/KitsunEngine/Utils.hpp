@@ -1,14 +1,14 @@
-#ifndef __N1GHTTHEF0X_KITSUNENGINE_HPP
-#define __N1GHTTHEF0X_KITSUNENGINE_HPP
+#ifndef __N1GHTTHEF0X_KITSUNENGINE_UTILS_HPP
+#define __N1GHTTHEF0X_KITSUNENGINE_UTILS_HPP
 
 #include <vector>
-#include <string>
+#include "Utils/String.hpp"
 
 namespace N1ghtTheF0x
 {
     namespace KitsunEngine
     {
-        typedef const std::vector<std::string> Argv;
+        typedef const std::vector<String> Argv;
     }
 }
 
