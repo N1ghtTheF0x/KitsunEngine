@@ -36,7 +36,8 @@
             "description": "Compile using Visual Studio for Release",
             "inherits": "windows-msvc",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "USE_IMGUI": "FALSE"
             }
         },
         {

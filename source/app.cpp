@@ -1,24 +1,36 @@
 #include <N1ghtTheF0x/KitsunEngine/App.hpp>
 
-#include <iostream>
-
 namespace N1ghtTheF0x
 {
     namespace KitsunEngine
     {
+        Logger _appLogger = "Application";
         Application::Application()
         {
 
         }
-        Application::Application(int argc,char** argv): _argv(argv,argv + argc)
+        Application::Application(int argc,char** argv)
         {
-            
+            // TODO: make argc,argv into _argv
         }   
         int Application::run()
         {
-            String test = "a";
-            std::cout << test.append("b") << std::endl;
+            while (_running)
+            {
+                _displayEvents();
+                _update();
+                _rendering();
+            }
+            
             return EXIT_SUCCESS;
+        }
+        void Application::_update()
+        {
+
+        }
+        void Application::_rendering()
+        {
+
         }
     }
 }

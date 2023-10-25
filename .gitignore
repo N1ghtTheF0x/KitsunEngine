@@ -4,3 +4,7 @@ build
 bin
 lib
 out
+
+# Visual Studio Code
+
+.vscode/settings.json

@@ -6,6 +6,12 @@ namespace N1ghtTheF0x
 {
     namespace KitsunEngine
     {
+        String::String()
+        {
+            _length = 0;
+            _pointer = new char[_memory_length()];
+            _pointer[_length] = '\0';
+        }
         String::String(const char letter)
         {
             _length = 1;
@@ -17,21 +23,29 @@ namespace N1ghtTheF0x
         {
             _length = strlen(cstr);
             _pointer = new char[_memory_length()];
-            memcpy(_pointer,cstr,_memory_length());
+            memcpy(_pointer,cstr,_length);
+            _pointer[_length] = '\0';
         }
-        String::String(const std::string string)
+        String::String(const std::string string): String(string.c_str())
         {
-            _length = string.size();
-            _pointer = new char[_memory_length()];
-            memcpy(_pointer,string.c_str(),_memory_length());
+            
         }
-        String::String(const std::stringstream &stream)
+        String::String(const std::stringstream &stream): String(stream.str())
         {
-            auto string = stream.str();
-            _length = string.size();
-            _pointer = new char[_memory_length()];
-            memcpy(_pointer,string.c_str(),_memory_length());
+
         }
+        #define STRING_NUMBER(type) String::String(type number): String(std::to_string(number)) {  }
+        STRING_NUMBER(s8)
+        STRING_NUMBER(u8)
+        STRING_NUMBER(s16)
+        STRING_NUMBER(u16)
+        STRING_NUMBER(s32)
+        STRING_NUMBER(u32)
+        STRING_NUMBER(s64)
+        STRING_NUMBER(u64)
+        STRING_NUMBER(float)
+        STRING_NUMBER(double)
+        #undef STRING_NUMBER
         String::~String()
         {
             delete _pointer;
@@ -44,9 +58,30 @@ namespace N1ghtTheF0x
         {
             return _pointer;
         }
+        String &String::operator=(const String &string)
+        {
+            _length = string._length;
+            delete _pointer;
+            _pointer = new char[_memory_length()];
+            memcpy(_pointer,string._pointer,string._length);
+            _pointer[_length] = '\0';
+            return *this;
+        }
+        String String::operator+(const String &string)
+        {
+            return add(string);
+        }
+        String &String::operator+=(const String &string)
+        {
+            return append(string);
+        }
         u64 String::length() const
         {
             return _length;
+        }
+        bool String::empty() const
+        {
+            return _length == 0;
         }
         u64 String::_memory_length() const
         {
@@ -76,6 +111,59 @@ namespace N1ghtTheF0x
             _resize(_length + string._length);
             memcpy(_pointer + currentLength,string._pointer,string._length);
             return *this;
+        }
+        String String::add(const String &string)
+        {
+            String newString(_pointer);
+            return newString.append(string);
+        }
+        String String::substring(u64 start)
+        {
+            return substring(start,_length);
+        }
+        String String::substring(u64 start,u64 end)
+        {
+            u64 length = end - start;
+            char* temp = new char[length+1];
+            temp[length] = '\0';
+
+            memcpy(temp,_pointer + start,length);
+
+            String string(temp);
+            delete string;
+            return string;
+        }
+        bool String::startsWith(const String &string)
+        {
+            for(u64 index = 0;index < string._length;index++)
+            {
+                char thisChar = charAt(index);
+                char otherChar = string.charAt(index);
+                if(thisChar != otherChar)
+                    return false;
+            }
+            return true;
+        }
+        bool String::endsWith(const String &string)
+        {
+            for(u64 index = 0;index < string._length;index++)
+            {
+                char thisChar = charAt(_length - 1 - index);
+                char otherChar = string.charAt(string._length - 1 - index);
+                if(thisChar != otherChar)
+                    return false;
+            }
+            return true;
+        }
+        bool String::includes(const String &string)
+        {
+            u64 check = 0;
+            for(u64 index = 0;index < _length;index++)
+            {
+                if(check == string._length) return true;
+                check = charAt(index) == string.charAt(check) ? check + 1 : 0;
+            }
+            return false;
         }
     }
 }
