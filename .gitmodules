@@ -10,3 +10,6 @@
 	path = thirdparty/sdl_image
 	url = https://github.com/libsdl-org/SDL_image
 	branch = SDL2
+[submodule "LibKitsune"]
+	path = firstparty/libkitsune
+	url = https://github.com/N1ghtTheF0x/libkitsune
