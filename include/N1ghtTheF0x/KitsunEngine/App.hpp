@@ -16,12 +16,19 @@ namespace N1ghtTheF0x
 #endif
         private:
             Core::Display _display;
+            Core::Context *_context = nullptr;
             bool _running = true;
+            bool _hasContext = false;
         public:
             Application();
             Application(int argc,char** argv);
+            ~Application();
 
             int run();
+            const Core::Context *context() const;
+            const Core::Display &display() const;
+            Core::Context *createContext(Core::Context::Type type);
+            bool hasContext() const;
         private:
             void _init();
             void _displayEvents();

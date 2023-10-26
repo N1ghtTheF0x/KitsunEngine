@@ -13,8 +13,10 @@ namespace N1ghtTheF0x
     {
         namespace SDL2
         {
-            void Init();
-            void Destroy();
+            void InitSDL2();
+            void DestroySDL2();
+
+            void InitOpenGL();
         }
     }
 }

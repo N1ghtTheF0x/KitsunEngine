@@ -31,7 +31,7 @@ if(WIN32)
 endif(WIN32)
 if(WIN32 OR UNIX)
     set(PLATTFORM_DESKTOP TRUE)
-    set(PLATTFORM_CPP "desktop")
+    set(PLATTFORM "desktop")
 
     set(INCLUDE_HEADERS
         firstparty/libkitsune/include()
@@ -45,8 +45,7 @@ if(WIN32 OR UNIX)
     set(LIBRARIES
         libkitsune
         glad 
-        SDL2 
-        SDL2main
+        SDL2
         SDL2_mixer 
         SDL2_image
     )
@@ -59,9 +58,9 @@ endif()
 if(NINTENDODS OR NINTENDO3DS)
     set(PLATTFORM_DS TRUE)
     if(NINTENDODS)
-        set(PLATTFORM_CPP "ds")
+        set(PLATTFORM "ds")
     else()
-        set(PLATTFORM_CPP "3ds")
+        set(PLATTFORM "3ds")
     endif()
 endif()
 
@@ -75,11 +74,14 @@ add_library(${LIB_NAME}
     ${${LIB_NAME}_HEADERS}
 
     source/app.cpp
-    source/app_${PLATTFORM_CPP}.cpp
+    source/app_${PLATTFORM}.cpp
     
     source/utils/sdl.cpp
+    source/utils/opengl.cpp
 
-    source/core/display_${PLATTFORM_CPP}.cpp
+    source/core/display_${PLATTFORM}.cpp
+    source/core/context.cpp
+    source/core/context_${PLATTFORM}.cpp
 )
 
 # Main Library Settings
@@ -105,7 +107,7 @@ endif()
 
 add_executable(${PROJECT_NAME} ${EXE_TYPE} main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_HEADERS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LIB_NAME} ${LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${LIB_NAME} ${LIBRARIES} SDL2main)
 
-message(STATUS "Plattform: ${PLATTFORM_CPP}")
+message(STATUS "Plattform: ${PLATTFORM}")
 message(STATUS "Use ImGui: ${USE_IMGUI}")

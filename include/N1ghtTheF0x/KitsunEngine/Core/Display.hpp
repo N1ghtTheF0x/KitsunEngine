@@ -4,6 +4,7 @@
 #include <N1ghtTheF0x/LibKitsune/String.hpp>
 
 #include "../Utils/SDL.hpp"
+#include "../Utils/Macros.hpp"
 
 namespace N1ghtTheF0x
 {
@@ -11,6 +12,7 @@ namespace N1ghtTheF0x
     {
         namespace Core
         {
+            KITSUNENGINE_CLASS(Display)
             class Display
             {
 #ifdef PLATTFORM_DESKTOP
@@ -22,6 +24,8 @@ namespace N1ghtTheF0x
 
                 operator SDL_Window*();
                 operator SDL_Surface*();
+
+                bool create(u32 flags);
             private:
                 LibKitsune::String _title;
                 SDL_Window *_pointer;
@@ -36,6 +40,7 @@ namespace N1ghtTheF0x
                 ~Display();
 
                 bool create();
+                bool close();
 
                 int width() const;
                 int height() const;

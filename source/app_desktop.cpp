@@ -6,9 +6,8 @@ namespace N1ghtTheF0x
     {
         void Application::_init()
         {
-            SDL2::Init();
-            if(!_display.create())
-                exit(EXIT_FAILURE);
+            SDL2::InitSDL2();
+            createContext(Core::Context::Type::OpenGL);
         }
         void Application::_displayEvents()
         {
@@ -24,7 +23,7 @@ namespace N1ghtTheF0x
         }
         void Application::_clean()
         {
-            SDL2::Destroy();
+            SDL2::DestroySDL2();
         }
     }
 }

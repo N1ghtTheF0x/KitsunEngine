@@ -9,7 +9,7 @@ namespace N1ghtTheF0x
 {
     namespace KitsunEngine
     {
-        LibKitsune::Logger _displayLogger = "Display";
+        static LibKitsune::Logger _displayLogger = "Display";
         namespace Core
         {
             Display::Display(int width,int height,const LibKitsune::String title)
@@ -28,7 +28,7 @@ namespace N1ghtTheF0x
             }
             Display::~Display()
             {
-                SDL_DestroyWindow(_pointer);
+                close();
             }
             Display::operator SDL_Window *()
             {
@@ -38,12 +38,21 @@ namespace N1ghtTheF0x
             {
                 return _surface;
             }
-            bool Display::create()
+            bool Display::close()
             {
                 if(_created)
                     SDL_DestroyWindow(_pointer);
+            }
+            bool Display::create()
+            {
+                return create(SDL_WINDOW_SHOWN);
+            }
+            bool Display::create(u32 flags)
+            {
+                if(_created)
+                    close();
                 _created = false;
-                _pointer = SDL_CreateWindow(_title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,_width,_height,0);
+                _pointer = SDL_CreateWindow(_title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,_width,_height,flags);
                 if(_pointer == 0)
                 {
                     _displayLogger.error() << "Couldn't create Window \"" << _title << "\" with a resolution of " << _width << "x" << _height << ": " << SDL_GetError() << std::endl;

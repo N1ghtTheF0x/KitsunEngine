@@ -32,7 +32,9 @@ I'm trying to make this work on a Nintendo DS/3DS but there's no code yet D:
 
 # 3th-Party License Stuff
 
-[SDL2][sdl2-link], [SDL2_image][sdl2_image-link] and [SDL2_mixer-link][sdl2_mixer-link] are all licensed to `zlib License`
+[SDL2][sdl2-link], [SDL2_image][sdl2_image-link] and [SDL2_mixer-link][sdl2_mixer-link] are all licensed to `zlib License`  
+[ImGui][imgui-link] is `MIT License`  
+[Glad][glad-link] is [according to source code][glad-source-link] `Public Domain`, `WTFPL` or `CC0`
 
 # License
 
@@ -41,6 +43,10 @@ This project is licensed under [this][license-link] license
 [sdl2-link]: https://github.com/libsdl-org/SDL
 [sdl2_image-link]: https://github.com/libsdl-org/SDL_image
 [sdl2_mixer-link]: https://github.com/libsdl-org/SDL_mixer
+
+[imgui-link]: https://github.com/ocornut/imgui
+[glad-link]: https://glad.dav1d.de/
+[glad-source-link]: https://github.com/Dav1dde/glad
 
 [kitsunengine-logo]: ./brand/logo.png
 [license-link]: ./LICENSE

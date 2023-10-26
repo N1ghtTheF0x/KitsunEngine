@@ -1,4 +1,7 @@
 #include <N1ghtTheF0x/KitsunEngine.hpp>
+#include <N1ghtTheF0x/LibKitsune/Logger.hpp>
+
+static N1ghtTheF0x::LibKitsune::Logger _mainLogger = "Main";
 
 #ifdef _WIN64
 #include <windows.h>
@@ -14,7 +17,19 @@ int CALLBACK WinMain(
 int main(int argc,char** argv)
 {
 #endif
-    N1ghtTheF0x::KitsunEngine::Application app;
-    int result = app.run();
-    return result;
+    try
+    {
+        N1ghtTheF0x::KitsunEngine::Application app;
+        int result = app.run();
+        return result;
+    }
+    catch(const std::exception& e)
+    {
+        _mainLogger.error() << e.what() << std::endl;
+    }
+    catch(...)
+    {
+        _mainLogger.error() << "Damn, something REAL shit happend..." << std::endl;
+    }
+    return EXIT_FAILURE;
 }

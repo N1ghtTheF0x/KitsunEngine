@@ -2,6 +2,7 @@
 #define __N1GHTTHEF0X_KITSUNENGINE_CORE_HPP
 
 #include "Core/Display.hpp"
+#include "Core/Context.hpp"
 
 namespace N1ghtTheF0x
 {
