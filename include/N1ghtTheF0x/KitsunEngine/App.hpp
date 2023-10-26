@@ -23,9 +23,11 @@ namespace N1ghtTheF0x
 
             int run();
         private:
+            void _init();
             void _displayEvents();
             void _update();
             void _rendering();
+            void _clean();
         };
     }
 }

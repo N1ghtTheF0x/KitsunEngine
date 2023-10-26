@@ -6,6 +6,18 @@
 #include <glad/glad.h>
 #include <SDL_mixer.h>
 #include <SDL_image.h>
-#endif
 
+namespace N1ghtTheF0x
+{
+    namespace KitsunEngine
+    {
+        namespace SDL2
+        {
+            void Init();
+            void Destroy();
+        }
+    }
+}
+
+#endif
 #endif

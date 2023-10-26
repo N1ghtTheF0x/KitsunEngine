@@ -1,10 +1,11 @@
 #include <N1ghtTheF0x/KitsunEngine/App.hpp>
+#include <N1ghtTheF0x/LibKitsune/Logger.hpp>
 
 namespace N1ghtTheF0x
 {
     namespace KitsunEngine
     {
-        Logger _appLogger = "Application";
+        LibKitsune::Logger _appLogger = "Application";
         Application::Application()
         {
 
@@ -21,12 +22,12 @@ namespace N1ghtTheF0x
                 _update();
                 _rendering();
             }
-            
+            _clean();
             return EXIT_SUCCESS;
         }
         void Application::_update()
         {
-
+            
         }
         void Application::_rendering()
         {

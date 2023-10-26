@@ -19,6 +19,11 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 option(USE_IMGUI "Enable ImGui" TRUE)
 
+# C++ Settings
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Internal CMake Options
 
 if(WIN32)
@@ -28,9 +33,8 @@ if(WIN32 OR UNIX)
     set(PLATTFORM_DESKTOP TRUE)
     set(PLATTFORM_CPP "desktop")
 
-    
-
     set(INCLUDE_HEADERS
+        firstparty/libkitsune/include()
         thirdparty/sdl/include 
         thirdparty/glad/include 
         thirdparty/sdl_mixer/include 
@@ -39,6 +43,7 @@ if(WIN32 OR UNIX)
     )
 
     set(LIBRARIES
+        libkitsune
         glad 
         SDL2 
         SDL2main
@@ -60,11 +65,6 @@ if(NINTENDODS OR NINTENDO3DS)
     endif()
 endif()
 
-# C++ Settings
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # Main Library
 
 string(TOLOWER lib${PROJECT_NAME} LIB_NAME)
@@ -76,16 +76,15 @@ add_library(${LIB_NAME}
 
     source/app.cpp
     source/app_${PLATTFORM_CPP}.cpp
-
-    source/utils/string.cpp
-    source/utils/logger.cpp
-    source/utils/date.cpp
     
+    source/utils/sdl.cpp
+
     source/core/display_${PLATTFORM_CPP}.cpp
 )
 
 # Main Library Settings
 
+add_subdirectory(firstparty)
 if(PLATTFORM_DESKTOP)
     # 3rd-Party
     add_subdirectory(thirdparty)
@@ -107,3 +106,6 @@ endif()
 add_executable(${PROJECT_NAME} ${EXE_TYPE} main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_HEADERS})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${LIB_NAME} ${LIBRARIES})
+
+message(STATUS "Plattform: ${PLATTFORM_CPP}")
+message(STATUS "Use ImGui: ${USE_IMGUI}")

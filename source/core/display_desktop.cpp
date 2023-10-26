@@ -1,5 +1,5 @@
 #include <N1ghtTheF0x/KitsunEngine/Core/Display.hpp>
-#include <N1ghtTheF0x/KitsunEngine/Utils/Logger.hpp>
+#include <N1ghtTheF0x/LibKitsune/Logger.hpp>
 
 #define DEFAULT_WIDTH 1280
 #define DEFAULT_HEIGHT 720
@@ -9,29 +9,14 @@ namespace N1ghtTheF0x
 {
     namespace KitsunEngine
     {
-        Logger _displayLogger = "Display";
+        LibKitsune::Logger _displayLogger = "Display";
         namespace Core
         {
-            void Display::init_sdl()
+            Display::Display(int width,int height,const LibKitsune::String title)
             {
-                if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
-                {
-                    _displayLogger.error() << "Couldn't initialize SDL: " << SDL_GetError() << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-            }
-            void Display::deinit_sdl()
-            {
-                SDL_Quit();
-            }
-            Display::Display(int width,int height,const String &title)
-            {
-                _pointer = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,width,height,0);
-                if(_pointer == 0)
-                {
-                    _displayLogger.error() << "Couldn't create Window \"" << title << "\" with a resolution of " << width << "x" << height << ": " << SDL_GetError() << std::endl;
-                    exit(EXIT_FAILURE);
-                }
+                _width = width;
+                _height = height;
+                _title = title;
             }
             Display::Display(int width,int height): Display(width,height,DEFAULT_TITLE)
             {
@@ -49,17 +34,37 @@ namespace N1ghtTheF0x
             {
                 return _pointer;
             }
+            Display::operator SDL_Surface *()
+            {
+                return _surface;
+            }
+            bool Display::create()
+            {
+                if(_created)
+                    SDL_DestroyWindow(_pointer);
+                _created = false;
+                _pointer = SDL_CreateWindow(_title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,_width,_height,0);
+                if(_pointer == 0)
+                {
+                    _displayLogger.error() << "Couldn't create Window \"" << _title << "\" with a resolution of " << _width << "x" << _height << ": " << SDL_GetError() << std::endl;
+                    return false;
+                }
+                _surface = SDL_GetWindowSurface(_pointer);
+                if(_pointer == 0)
+                {
+                    _displayLogger.error() << "Couldn't get Window surface \"" << _title << "\" with a resolution of " << _width << "x" << _height << ": " << SDL_GetError() << std::endl;
+                    return false;
+                }
+                _created = true;
+                return true;
+            }
             int Display::width() const
             {
-                int _;
-                SDL_GetWindowSize(_pointer,&_,0);
-                return _;
+                return _width;
             }
             int Display::height() const
             {
-                int _;
-                SDL_GetWindowSize(_pointer,0,&_);
-                return _;
+                return _height;
             }
         }
     }
