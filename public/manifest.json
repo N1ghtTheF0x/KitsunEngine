@@ -1,0 +1,13 @@
+{
+    "background_color": "#000000",
+    "categories": ["games"],
+    "description": "A game engine",
+    "display": "standalone",
+    "id": "/?pwa",
+    "name": "KitsunEngine",
+    "orientation": "any",
+    "scope": "/",
+    "short_name": "KEngine",
+    "start_url": "/",
+    "theme_color": "#FFA500"
+}

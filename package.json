@@ -1,0 +1,23 @@
+{
+  "name": "kitsunengine",
+  "version": "1.0.0",
+  "description": "A game engine",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.mjs",
+    "preserve": "pnpm build",
+    "serve": "pnpx http-server -c-1 dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "typescript": "latest",
+    "tsdown": "latest"
+  },
+  "dependencies": {
+    "@ntf/logger": "latest",
+    "@ntf/math": "latest"
+  }
+}

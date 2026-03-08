@@ -1,0 +1,9 @@
+.kitsunengine-canvas {
+    image-rendering: pixelated;
+}
+
+#kitsunengine-canvas-main {
+    position: absolute;
+    inset: 0;
+    background-color: black;
+}

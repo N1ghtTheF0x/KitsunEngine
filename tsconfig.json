@@ -1,0 +1,26 @@
+{
+    "include": ["source"],
+    "exclude": ["node_modules","dist"],
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "moduleDetection": "force",
+        "lib": ["ESNext","DOM","DOM.Iterable","DOM.AsyncIterable"],
+        "types": [],
+        "strict": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "isolatedModules": true,
+        "noUncheckedIndexedAccess": true,
+        "noUncheckedSideEffectImports": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "paths": {
+            "@core/*": ["./source/core/*"],
+            "@utilities/*": ["./source/utilities/*"]
+        }
+    }
+}
