@@ -3,6 +3,7 @@ import IInputMethod from "./method"
 import EngineCoreIO from ".."
 import { IPostUpdate, IUpdate } from "@utilities/types"
 import keyboard from "./methods/keyboard"
+import mouse from "./methods/mouse"
 import { Vec2, Vec2Like, Vec3, Vec3Like } from "@ntf/math"
 import EngineCoreWindow from "../window"
 
@@ -25,7 +26,7 @@ class EngineCoreInput implements IUpdate, IPostUpdate
     public constructor(io: EngineCoreIO)
     {
         this.io = io
-        this.addMethod(keyboard)
+        this.addMethod(keyboard,mouse)
     }
     public addMethod(...methods: Array<IInputMethod>): this
     {

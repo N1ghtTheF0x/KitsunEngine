@@ -52,7 +52,7 @@ class AssetDatabase
             const asset = assets[i]!
             const l = Number(i)
             logger.info("loading",asset.path)
-            loaded.push(Promise.resolve(asset.load()).then(() => this.onLoadProgress.notify(assets.length,l + 1)))
+            loaded.push(Promise.resolve(asset.load(this.engine.core.io.filesytem)).then(() => this.onLoadProgress.notify(assets.length,l + 1)))
         }
         await Promise.all(loaded)
         this.onLoaded.notify()

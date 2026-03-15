@@ -4,6 +4,8 @@
   "description": "A game engine",
   "main": "index.js",
   "scripts": {
+    "check": "tsc --noEmit",
+    "prebuild": "pnpm check",
     "build": "node build.mjs",
     "preserve": "pnpm build",
     "serve": "pnpx http-server -c-1 dist"

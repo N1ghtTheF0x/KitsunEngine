@@ -14,13 +14,13 @@ const mouse: IInputMethod = {
             ev.preventDefault()
             input.setValue(`Mouse${ev.button}`,false)
         })
+        input.domElement.addEventListener("contextmenu",ev => ev.preventDefault())
         input.domElement.addEventListener("mousemove",(ev) =>
         {
             ev.preventDefault()
             input.setValueVec2("Mouse",[ev.offsetX,ev.offsetY])
             input.setValueVec2("MouseDelta",[ev.movementX,ev.movementY])
         })
-
     }
 }
 

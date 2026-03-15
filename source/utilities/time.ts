@@ -75,7 +75,40 @@ export class SetIntervalTimeHandler extends TimeHandler
     }
 }
 
-export type TimeHandlerType = "requestAnimationFrame" | "setInterval"
+export class SetTimeOutTimeHandler extends TimeHandler
+{
+    private _handle: number = NaN
+    public maxFramesPerSecond: number = 60
+    public override start(): this
+    {
+        const time = () => 1000 / this.maxFramesPerSecond
+        const handle = async () =>
+        {
+            this._update_time(performance.now())
+            await this._cb()
+            this._handle = setTimeout(handle,time())
+        }
+        this._handle = setTimeout(handle,time())
+        return this
+    }
+    public override stop(): this
+    {
+        clearTimeout(this._handle)
+        return this
+    }
+}
+
+export function setMaxFramesPerSecond(handler: TimeHandler,maxFramesPerSecond: number): boolean
+{
+    if("maxFramesPerSecond" in handler && typeof handler.maxFramesPerSecond === "number")
+    {
+        handler.maxFramesPerSecond = maxFramesPerSecond
+        return true
+    }
+    return false
+}
+
+export type TimeHandlerType = "requestAnimationFrame" | "setInterval" | "setTimeout"
 
 export function createTimeHandler(type: TimeHandlerType,callback: TimeHandler.Callback): TimeHandler
 {
@@ -85,6 +118,8 @@ export function createTimeHandler(type: TimeHandlerType,callback: TimeHandler.Ca
             return new RequestAnimationFrameTimeHandler(callback)
         case "setInterval":
             return new SetIntervalTimeHandler(callback)
+        case "setTimeout":
+            return new SetTimeOutTimeHandler(callback)
         default:
             throw new TypeError(`unknown time handler type '${type}'`)
     }
@@ -96,5 +131,7 @@ export function createPreferredTimeHandler(callback: TimeHandler.Callback): Time
         return new RequestAnimationFrameTimeHandler(callback)
     if(typeof setInterval === "function")
         return new SetIntervalTimeHandler(callback)
+    if(typeof setTimeout === "function")
+        return new SetTimeOutTimeHandler(callback)
     throw new Error("the machine does not support any kind of time handling")
 }

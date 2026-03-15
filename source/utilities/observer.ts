@@ -1,6 +1,11 @@
 export class Publisher<Args extends Array<any> = []>
 {
     private _subscribers: Array<Subscriber<Args>> = []
+    public clear(): this
+    {
+        this._subscribers = []
+        return this
+    }
     public subscribe(...subscribe: Array<Subscriber<Args>>): this
     {
         this._subscribers.push(...subscribe)

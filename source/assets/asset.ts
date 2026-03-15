@@ -1,3 +1,5 @@
+import { IReadonlyFileSystemProvider } from "@core/io/filesystem/provider"
+
 abstract class Asset<T = unknown>
 {
     protected _value?: T
@@ -21,7 +23,7 @@ abstract class Asset<T = unknown>
     {
         return this._value !== undefined
     }
-    public abstract load(): Promise<void> | void
+    public abstract load(provider: IReadonlyFileSystemProvider): Promise<void> | void
     public unload(): void | Promise<void>
     {
         this._value = undefined

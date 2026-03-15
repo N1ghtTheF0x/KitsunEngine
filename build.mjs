@@ -18,6 +18,6 @@ await build({
     minify: PROD,
     deps: {
         alwaysBundle: ["@ntf/logger","@ntf/math"],
-        onlyAllowBundle: false
+        onlyBundle: false
     }
 })

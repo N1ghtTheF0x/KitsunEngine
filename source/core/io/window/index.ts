@@ -1,4 +1,4 @@
-import { Size, Vec2 } from "@ntf/math"
+import { Size, Vec2, Vec2Arguments, Vec2Like } from "@ntf/math"
 import EngineCore from "../.."
 import { CANVAS_CLASS_NAME, getRequiredCanvasContext } from "@utilities/canvas"
 import { IInit } from "@utilities/types"
@@ -82,6 +82,24 @@ class EngineCoreWindow implements IInit
     {
         this.context.transferFromImageBitmap(null)
         return this
+    }
+    public toNDC2(vec: Vec2Like): Vec2
+    public toNDC2(x: number,y: number): Vec2
+    public toNDC2(...args: Vec2Arguments): Vec2
+    {
+        return Vec2.resolveArgs(args)
+            .divide(this.domElement.width,this.domElement.height)
+            .multiply(2)
+            .subtract(1)
+    }
+    public fromNDC2(vec: Vec2Like): Vec2
+    public fromNDC2(x: number,y: number): Vec2
+    public fromNDC2(...args: Vec2Arguments): Vec2
+    {
+        return Vec2.resolveArgs(args)
+            .add(1)
+            .divide(2)
+            .naiveMultiply(this.domElement.width,this.domElement.height)
     }
 }
 
