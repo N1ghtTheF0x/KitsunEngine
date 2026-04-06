@@ -3,6 +3,7 @@ import OpenGLShader from "./shader"
 import OpenGLObject from "./object"
 import { required, requiredReference } from "@utilities/types"
 import OpenGLUniform from "./uniform"
+import OpenGLAttribute from "./attribute"
 
 class OpenGLProgram extends OpenGLObject<WebGLProgram>
 {
@@ -35,9 +36,9 @@ class OpenGLProgram extends OpenGLObject<WebGLProgram>
     {
         this.gl.useProgram(this.object)
     }
-    public getAttributeLocation(name: string): number
+    public getAttributeLocation(name: string): OpenGLAttribute
     {
-        return this.gl.getAttribLocation(required(this.object),name)
+        return new OpenGLAttribute(this.gl,this,this.gl.getAttribLocation(required(this.object),name))
     }
     public getUniformLocation(name: string): OpenGLUniform
     {
