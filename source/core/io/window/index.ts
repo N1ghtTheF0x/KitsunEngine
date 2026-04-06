@@ -1,7 +1,7 @@
 import { Size, Vec2, Vec2Arguments, Vec2Like } from "@ntf/math"
 import EngineCore from "../.."
 import { CANVAS_CLASS_NAME, getRequiredCanvasContext } from "@utilities/canvas"
-import { IInit } from "@utilities/types"
+import { IInit, IUpdate } from "@utilities/types"
 
 const MAIN_CANVAS_ID = "kitsunengine-canvas-main"
 
@@ -13,7 +13,7 @@ function __setup_canvas__(canvas: HTMLCanvasElement): void
     canvas.autofocus = true
 }
 
-class EngineCoreWindow implements IInit
+class EngineCoreWindow implements IInit, IUpdate
 {
     private _scale: number = 1
     private _offset: Vec2 = Vec2.zero
@@ -34,16 +34,14 @@ class EngineCoreWindow implements IInit
         this.core = core
         this.domElement = document.createElement("canvas")
         this.context = getRequiredCanvasContext(this.domElement,"bitmaprenderer",{alpha: false})
-        __setup_canvas__(this.domElement)
-        window.addEventListener("resize",this._on_resize.bind(this))
     }
     public init(): void
     {
         this.domElement.remove()
+        __setup_canvas__(this.domElement)
         this.target.append(this.domElement)
-        this._on_resize()
     }
-    private _on_resize(): void
+    public update(): void
     {
         const canvas = this.domElement
         const parentBoundingBox = canvas.parentElement?.getBoundingClientRect()
