@@ -20,6 +20,14 @@ class OpenGLShader extends OpenGLObject<WebGLShader>
         }
         return shader
     }
+    public static compileVertex(gl: OpenGL,source: string): OpenGLShader
+    {
+        return this.compile(gl,gl.VERTEX_SHADER,source)
+    }
+    public static compileFragment(gl: OpenGL,source: string): OpenGLShader
+    {
+        return this.compile(gl,gl.FRAGMENT_SHADER,source)
+    }
     public override delete(): void
     {
         this.gl.deleteShader(this.object)
