@@ -13,10 +13,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@10.33.0",
   "devDependencies": {
-    "typescript": "latest",
-    "tsdown": "latest"
+    "tsdown": "latest",
+    "typescript": "latest"
   },
   "dependencies": {
     "@ntf/logger": "latest",
