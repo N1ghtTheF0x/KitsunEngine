@@ -1,3 +1,5 @@
+import { AlertError } from "./error"
+
 export abstract class TimeHandler
 {
     private _currentTime: number = 0
@@ -133,5 +135,5 @@ export function createPreferredTimeHandler(callback: TimeHandler.Callback): Time
         return new SetIntervalTimeHandler(callback)
     if(typeof setTimeout === "function")
         return new SetTimeOutTimeHandler(callback)
-    throw new Error("the machine does not support any kind of time handling")
+    throw new AlertError("the machine does not support any kind of time handling")
 }

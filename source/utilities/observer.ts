@@ -1,4 +1,4 @@
-export class Publisher<Args extends Array<any> = []>
+export class Publisher<Args extends Array<unknown> = []>
 {
     private _subscribers: Array<Subscriber<Args>> = []
     public clear(): this
@@ -31,11 +31,11 @@ export class Publisher<Args extends Array<any> = []>
     }
 }
 
-export interface ISubscriber<Args extends Array<any>>
+export interface ISubscriber<Args extends Array<unknown>>
 {
     onNotify(...args: Args): void
 }
 
-export type SubscriberCallback<Args extends Array<any>> = (...args: Args) => void
+export type SubscriberCallback<Args extends Array<unknown>> = (...args: Args) => void
 
-export type Subscriber<Args extends Array<any>> = ISubscriber<Args> | SubscriberCallback<Args>
+export type Subscriber<Args extends Array<unknown>> = ISubscriber<Args> | SubscriberCallback<Args>
