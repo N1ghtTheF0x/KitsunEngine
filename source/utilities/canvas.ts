@@ -10,6 +10,12 @@ export type CanvasLike = HTMLCanvasElement | OffscreenCanvas
 
 export type OpenGL = WebGLRenderingContext | WebGL2RenderingContext
 
+export namespace OpenGL
+{
+    export type VertexArrayObject = WebGLVertexArrayObject | WebGLVertexArrayObjectOES
+    export type DataType = OpenGL["BYTE"] | OpenGL["SHORT"] | OpenGL["UNSIGNED_BYTE"] | OpenGL["UNSIGNED_SHORT"] | OpenGL["FLOAT"] | WebGL2RenderingContext["HALF_FLOAT"] | WebGL2RenderingContext["INT"] | WebGL2RenderingContext["UNSIGNED_INT"] | WebGL2RenderingContext["INT_2_10_10_10_REV"] | WebGL2RenderingContext["UNSIGNED_INT_2_10_10_10_REV"]
+}
+
 export function getRequiredCanvasContext<T extends keyof CanvasContextMap>(canvas: CanvasLike,type: T,options?: CanvasContextMap[T][1]): CanvasContextMap[T][0]
 {
     const context = canvas.getContext(type,options)
