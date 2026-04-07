@@ -23,11 +23,36 @@ export interface IDeletable
     delete(): void
 }
 
+export type Typeof = {
+    "string": string
+    "number": number
+    "bigint": bigint
+    "boolean": boolean
+    "symbol": symbol
+    "undefined": undefined
+    "object": {} | null
+    "function": (...args: Array<unknown>) => unknown
+}
+
 export function required<T>(value: T | null | undefined): T
 {
     if(value !== null && value !== undefined)
         return value
     throw new TypeError(`value is ${value}`)
+}
+
+export function requiredType<T extends keyof Typeof>(value: unknown,type: T): Typeof[T]
+{
+    if(typeof value === type)
+        return value as Typeof[T]
+    throw new TypeError(`${value} is not a ${type}`)
+}
+
+export function requirePrototype<V,Args extends Array<unknown>,Class extends new (...args: Args) => V>(value: unknown,Class: Class): V
+{
+    if(value instanceof Class)
+        return value
+    throw new TypeError(`${value} is not a ${Class.name}`)
 }
 
 export function isReference<T>(value: unknown,...refs: ReadonlyArray<T>): value is T
