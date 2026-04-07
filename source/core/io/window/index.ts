@@ -44,6 +44,8 @@ class EngineCoreWindow implements IInit, IUpdate
     public update(): void
     {
         const canvas = this.domElement
+        canvas.width = this.core.config.getWindowWidth()
+        canvas.height = this.core.config.getWindowHeight()
         const parentBoundingBox = canvas.parentElement?.getBoundingClientRect()
 
         const parentWidth = canvas.parentElement === document.body ? innerWidth : parentBoundingBox?.width ?? innerWidth
