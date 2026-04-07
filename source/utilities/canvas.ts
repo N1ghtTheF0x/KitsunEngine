@@ -45,6 +45,12 @@ export function createRequiredCanvasContext<T extends keyof CanvasContextMap>(ty
     return context
 }
 
+export const is2D = (context: RenderingContext): context is CanvasRenderingContext2D => context instanceof CanvasRenderingContext2D
+export const isWebGL1 = (context: RenderingContext): context is WebGLRenderingContext => context instanceof WebGLRenderingContext
+export const isWebGL2 = (context: RenderingContext): context is WebGL2RenderingContext => context instanceof WebGL2RenderingContext
+export const isBitmapRenderer = (context: RenderingContext): context is ImageBitmapRenderingContext => context instanceof ImageBitmapRenderingContext
+export const isWebGPU = (context: RenderingContext): context is GPUCanvasContext => context instanceof GPUCanvasContext
+
 export const CANVAS_CLASS_NAME = "kitsunengine-canvas"
 
 export const SUPPORTED_CANVAS_CONTEXT: Record<keyof CanvasContextMap,boolean> = {
