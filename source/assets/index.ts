@@ -5,6 +5,7 @@ import { Publisher } from "@utilities/observer"
 import KitsunEngine from ".."
 import ImageAsset from "./asset/image"
 import TextAsset from "./asset/text"
+import JavaScriptAsset from "./asset/javascript"
 
 const logger = createLogger("Assets")
 
@@ -23,6 +24,7 @@ class AssetDatabase
         this
             .addResolver([".png",".jpg",".jpeg",".webp",".gif"],ImageAsset)
             .addResolver([".txt",".md"],TextAsset)
+            .addResolver([".js",".mjs"],JavaScriptAsset)
     }
     public addResolver<T>(extensions: Array<string>,Asset: AssetConstructor<T>): this
     {
