@@ -1,0 +1,1 @@
+export const isAutoplayEnabled = new AudioContext().state === "running"
