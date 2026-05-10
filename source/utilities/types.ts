@@ -8,6 +8,11 @@ export interface IUpdate
     update(): void
 }
 
+export interface IDraw
+{
+    draw(): void
+}
+
 export interface IPostUpdate
 {
     postUpdate(): void
@@ -48,11 +53,18 @@ export function requiredType<T extends keyof Typeof>(value: unknown,type: T): Ty
     throw new TypeError(`${value} is not a ${type}`)
 }
 
-export function requirePrototype<V,Args extends Array<unknown>,Class extends new (...args: Args) => V>(value: unknown,Class: Class): V
+export function requirePrototype<V,Class extends new (...args: Array<unknown>) => V>(value: unknown,Class: Class): V
 {
     if(value instanceof Class)
         return value
     throw new TypeError(`${value} is not a ${Class.name}`)
+}
+
+export function requireArray(value: unknown): Array<unknown>
+{
+    if(Array.isArray(value))
+        return value
+    throw new TypeError(`${value} is not an array`)
 }
 
 export function isReference<T>(value: unknown,...refs: ReadonlyArray<T>): value is T
