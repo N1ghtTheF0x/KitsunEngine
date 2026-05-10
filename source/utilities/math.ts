@@ -1,3 +1,9 @@
 import * as math from "@ntf/math"
 
-Object.defineProperty(window,"@ntf/math",{get: () => math})
+(function()
+{
+    for(const [key,value] of Object.entries(math))
+    {
+        Object.defineProperty(Math,key,{value: value})
+    }
+})()
