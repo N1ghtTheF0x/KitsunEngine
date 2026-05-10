@@ -23,7 +23,7 @@ abstract class Asset<T = unknown>
     {
         return this._value !== undefined
     }
-    public abstract load(provider: IReadonlyFileSystemProvider): Promise<void> | void
+    public abstract load(provider: IReadonlyFileSystemProvider): Promise<void>
     public unload(): void | Promise<void>
     {
         this._value = undefined
