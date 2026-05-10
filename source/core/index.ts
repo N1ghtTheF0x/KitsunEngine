@@ -1,7 +1,7 @@
 import KitsunEngine from ".."
 import { IInit, IPostUpdate, IUpdate } from "@utilities/types"
 import EngineCoreIO from "./io"
-import EngineCoreWindow from "./io/window"
+import EngineCoreWindow from "./window"
 import EngineCoreConfig from "./config"
 
 class EngineCore implements IUpdate, IInit, IPostUpdate

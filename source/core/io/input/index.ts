@@ -5,7 +5,7 @@ import { IPostUpdate, IUpdate } from "@utilities/types"
 import keyboard from "./methods/keyboard"
 import mouse from "./methods/mouse"
 import { Vec2, Vec2Like, Vec3, Vec3Like } from "@ntf/math"
-import EngineCoreWindow from "../window"
+import EngineCoreWindow from "../../window"
 
 const logger = createLogger("Input")
 

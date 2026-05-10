@@ -1,7 +1,8 @@
 import { Size, Vec2, Vec2Arguments, Vec2Like } from "@ntf/math"
-import EngineCore from "../.."
-import { CANVAS_CLASS_NAME, getRequiredCanvasContext } from "@utilities/canvas"
+import EngineCore from "."
+import { CANVAS_CLASS_NAME, CanvasContextMap, getRequiredCanvasContext } from "@utilities/canvas"
 import { IInit, IUpdate } from "@utilities/types"
+import Renderer from "@core/graphics/renderer"
 
 const MAIN_CANVAS_ID = "kitsunengine-canvas-main"
 
@@ -44,8 +45,12 @@ class EngineCoreWindow implements IInit, IUpdate
     public update(): void
     {
         const canvas = this.domElement
-        canvas.width = this.core.config.getWindowWidth()
-        canvas.height = this.core.config.getWindowHeight()
+        const width = this.core.config.getWindowWidth()
+        const height = this.core.config.getWindowHeight()
+        if(canvas.width === width && canvas.height === height)
+            return
+        canvas.width = width
+        canvas.height = height
         const parentBoundingBox = canvas.parentElement?.getBoundingClientRect()
 
         const parentWidth = canvas.parentElement === document.body ? innerWidth : parentBoundingBox?.width ?? innerWidth
@@ -76,7 +81,13 @@ class EngineCoreWindow implements IInit, IUpdate
     }
     public drawWithCanvas(canvas: OffscreenCanvas): this
     {
-        return this.draw(canvas.transferToImageBitmap())
+        this.context.transferFromImageBitmap(canvas.transferToImageBitmap())
+        return this
+    }
+    public drawWithRenderer(renderer: Renderer<keyof CanvasContextMap>): this
+    {
+        this.context.transferFromImageBitmap(renderer.canvas.transferToImageBitmap())
+        return this
     }
     public clear(): this
     {
