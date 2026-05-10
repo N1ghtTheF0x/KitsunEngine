@@ -8,6 +8,10 @@ export abstract class TimeHandler
     {
         return this._currentTime - this._lastTime
     }
+    public get delta(): number
+    {
+        return this.deltaTime / 1000
+    }
     public get framesPerSecond(): number
     {
         return 1000 / this.deltaTime
@@ -111,6 +115,7 @@ export function setMaxFramesPerSecond(handler: TimeHandler,maxFramesPerSecond: n
 }
 
 export type TimeHandlerType = "requestAnimationFrame" | "setInterval" | "setTimeout"
+export type TimeHandlerMethod = TimeHandlerType | "auto"
 
 export function createTimeHandler(type: TimeHandlerType,callback: TimeHandler.Callback): TimeHandler
 {
@@ -127,8 +132,10 @@ export function createTimeHandler(type: TimeHandlerType,callback: TimeHandler.Ca
     }
 }
 
-export function createPreferredTimeHandler(callback: TimeHandler.Callback): TimeHandler
+export function createPreferredTimeHandler(method: TimeHandlerMethod,callback: TimeHandler.Callback): TimeHandler
 {
+    if(method !== "auto")
+        return createTimeHandler(method,callback)
     if(typeof requestAnimationFrame === "function")
         return new RequestAnimationFrameTimeHandler(callback)
     if(typeof setInterval === "function")

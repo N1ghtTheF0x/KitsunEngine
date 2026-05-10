@@ -1,4 +1,6 @@
+import { TimeHandlerMethod } from "@utilities/time"
 import EngineCore from ".."
+import { isReference } from "@utilities/types"
 
 class EngineCoreConfig
 {
@@ -11,6 +13,8 @@ class EngineCoreConfig
         this
             .setDefaultValue("window.width",screen.width)
             .setDefaultValue("window.height",screen.height)
+            .setDefaultValue("timehandler.method","auto")
+            .setDefaultValue("timehandler.max_fps",60)
     }
     public getValue(key: string): string | undefined
     {
@@ -55,6 +59,25 @@ class EngineCoreConfig
     public setWindowHeight(height: number): this
     {
         return this.setValue("window.height",height)
+    }
+    public getTimeHandlerMethod(): TimeHandlerMethod
+    {
+        const method = this.getValue("timehandler.method") ?? "auto"
+        if(!isReference(method,"auto","requestAnimationFrame","setTimeout","setInterval"))
+            return "auto"
+        return method
+    }
+    public setTimeHandlerMethod(method: TimeHandlerMethod): this
+    {
+        return this.setValue("timehandler.method",method)
+    }
+    public getTimeHandlerMaxFPS(): number
+    {
+        return this.getNumber("timehandler.max_fps") ?? 60
+    }
+    public setTimeHandlerMaxFPS(fps: number): this
+    {
+        return this.setValue("timehandler.max_fps",fps)
     }
 }
 
