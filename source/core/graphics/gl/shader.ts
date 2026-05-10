@@ -11,8 +11,8 @@ class OpenGLShader extends OpenGLObject<WebGLShader>
     ): OpenGLShader
     {
         const shader = new this(gl,required(gl.createShader(type)))
-        gl.shaderSource(shader,source)
-        gl.compileShader(shader)
+        shader.source(source)
+        shader.compile()
         if(!shader.getCompileStatus())
         {
             shader.delete()
@@ -32,9 +32,19 @@ class OpenGLShader extends OpenGLObject<WebGLShader>
     {
         this.gl.deleteShader(this.object)
     }
-    public getParameter(pname: GLenum): unknown
+    public override getParameter(pname: GLenum): unknown
     {
         return this.gl.getShaderParameter(required(this.object),pname)
+    }
+    public source(source: string): this
+    {
+        this.gl.shaderSource(required(this.object),source)
+        return this
+    }
+    public compile(): this
+    {
+        this.gl.compileShader(required(this.object))
+        return this
     }
     public getDeleteStatus(): boolean
     {

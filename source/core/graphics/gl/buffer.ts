@@ -27,7 +27,7 @@ class OpenGLBuffer extends OpenGLObject<WebGLBuffer>
     {
         this.gl.bufferData(this.target,data,usage)
     }
-    public getParameter(pname: GLenum): unknown
+    public override getParameter(pname: GLenum): unknown
     {
         return this.gl.getBufferParameter(this.target,pname)
     }

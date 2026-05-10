@@ -1,7 +1,7 @@
 import { createLogger } from "@ntf/logger"
-import { RGBA } from "@ntf/math"
 import { isWebGL1, isWebGL2, OpenGL } from "@utilities/canvas"
-import { requiredType, requirePrototype } from "@utilities/types"
+import { required, requiredType, requirePrototype, Typeof } from "@utilities/types"
+import OpenGLExtensions from "./extension"
 
 class OpenGLBase<GL extends OpenGL = OpenGL>
 {
@@ -35,34 +35,22 @@ class OpenGLBase<GL extends OpenGL = OpenGL>
     {
         return this.gl.getParameter(pname)
     }
-    public getActiveTexture(): GLenum
+    public getExtension<N extends keyof OpenGLExtensions>(name: N): OpenGLExtensions[N]
     {
-        return requiredType(this.getParameter(this.gl.ACTIVE_TEXTURE),"number")
+        return required(this.gl.getExtension(name))
     }
-    public getAliasedLineWidthRange(): Float32Array
+    public getObjectParameter<T>(pname: GLenum,Class: new () => T,isNull?: true): T | undefined
+    public getObjectParameter<T>(pname: GLenum,Class: new () => T,isNull?: false): T
+    public getObjectParameter<T>(pname: GLenum,Class: new () => T,isNull: boolean = true): T | undefined
     {
-        return requirePrototype(this.getParameter(this.gl.ALIASED_LINE_WIDTH_RANGE),Float32Array)
+        const object = this.gl.getParameter(pname)
+        if(object === null && isNull)
+            return undefined
+        return requirePrototype(object,Class)
     }
-    public getAliasedPointSizeRange(): Float32Array
+    public getTypedParameter<T extends keyof Typeof>(pname: GLenum,type: T): Typeof[T]
     {
-        return requirePrototype(this.getParameter(this.gl.ALIASED_POINT_SIZE_RANGE),Float32Array)
-    }
-    public getAlphaBits(): GLint
-    {
-        return requiredType(this.getParameter(this.gl.ALPHA_BITS),"number")
-    }
-    public getArrayBufferBinding(): WebGLBuffer
-    {
-        return requirePrototype(this.getParameter(this.gl.ARRAY_BUFFER_BINDING),WebGLBuffer)
-    }
-    public getBlend(): GLboolean
-    {
-        return requiredType(this.getParameter(this.gl.BLEND),"boolean")
-    }
-    public getBlendColor(): RGBA
-    {
-        const [red,green,blue,alpha] = requirePrototype(this.getParameter(this.gl.BLEND_COLOR),Float32Array)
-        return new RGBA()
+        return requiredType(this.getParameter(pname),type)
     }
 }
 

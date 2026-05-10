@@ -10,11 +10,10 @@ class OpenGLProgram extends OpenGLObject<WebGLProgram>
     public static link(gl: OpenGL,...shaders: Array<OpenGLShader>): OpenGLProgram
     {
         const program = new this(gl,gl.createProgram())
-        const object = required(program.object)
         for(const shader of shaders)
-            gl.attachShader(object,required(shader.object))
-        gl.linkProgram(object)
-        gl.validateProgram(object)
+            program.attachShader(shader)
+        program.link()
+        program.validate()
         if(!program.getLinkStatus())
         {
             program.delete()
@@ -26,6 +25,21 @@ class OpenGLProgram extends OpenGLObject<WebGLProgram>
     public delete(): void
     {
         this.gl.deleteProgram(this.object)
+    }
+    public attachShader(shader: OpenGLShader): this
+    {
+        this.gl.attachShader(required(this.object),required(shader.object))
+        return this
+    }
+    public link(): this
+    {
+        this.gl.linkProgram(required(this.object))
+        return this
+    }
+    public validate(): this
+    {
+        this.gl.validateProgram(required(this.object))
+        return this
     }
     public getAttachedShaders(): Array<OpenGLShader>
     {
@@ -44,7 +58,7 @@ class OpenGLProgram extends OpenGLObject<WebGLProgram>
     {
         return new OpenGLUniform(this.gl,this,this.gl.getUniformLocation(required(this.object),name))
     }
-    public getParameter(pname: GLenum): unknown
+    public override getParameter(pname: GLenum): unknown
     {
         return this.gl.getProgramParameter(required(this.object),pname)
     }
