@@ -1,6 +1,7 @@
 import { CanvasContextMap, getRequiredCanvasContext } from "@utilities/canvas"
+import { IDeletable } from "@utilities/types"
 
-abstract class Renderer<T extends keyof CanvasContextMap>
+abstract class Renderer<T extends keyof CanvasContextMap> implements IDeletable
 {
     public readonly type: T
     public readonly canvas: OffscreenCanvas
@@ -12,6 +13,7 @@ abstract class Renderer<T extends keyof CanvasContextMap>
         this.context = getRequiredCanvasContext(this.canvas,type)
     }
     public abstract clear(): void
+    public abstract delete(): void
 }
 
 export default Renderer
