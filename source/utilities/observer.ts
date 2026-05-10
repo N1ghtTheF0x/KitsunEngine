@@ -26,7 +26,7 @@ export class Publisher<Args extends Array<unknown> = []>
             if(typeof sub === "function")
                 sub(...args)
             else if(typeof sub === "object")
-                sub.onNotify(...args)
+                sub.onNotify.bind(sub)(...args)
         }
     }
 }
