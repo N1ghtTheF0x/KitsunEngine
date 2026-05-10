@@ -16,6 +16,10 @@ await build({
     ],
     sourcemap: !PROD,
     minify: PROD,
+    loader: {
+        ".frag": "text",
+        ".vert": "text"
+    },
     deps: {
         alwaysBundle: ["@ntf/logger","@ntf/math"],
         onlyBundle: false
